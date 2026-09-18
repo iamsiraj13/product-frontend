@@ -1,11 +1,12 @@
-import type { Metadata } from 'next';
-import { RegisterForm } from '@/components/auth/RegisterForm';
-import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import type { Metadata } from "next";
+import { RegisterForm } from "@/components/auth/RegisterForm";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: 'Register | Crate & Barrel Agent Portal',
-  description: 'Create your exclusive Crate & Barrel agent portal account for luxury interior solutions.',
+  title: "Register | HNI Corporation Portal",
+  description:
+    "Create your exclusive Crate & Barrel agent portal account for luxury interior solutions.",
 };
 
 export default function RegisterPage() {
@@ -32,7 +33,8 @@ export default function RegisterPage() {
 
       {/* Footer */}
       <footer className="w-full max-w-7xl mx-auto text-center text-xs text-gray-400 z-10 py-4">
-        &copy; {new Date().getFullYear()} Crate & Barrel Agent Portal. All rights reserved.
+        &copy; {new Date().getFullYear()} Crate & Barrel Agent Portal. All
+        rights reserved.
       </footer>
     </main>
   );

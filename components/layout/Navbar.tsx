@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { User as UserIcon, LayoutDashboard, LogOut } from 'lucide-react';
-import { useAuthStore } from '@/store/useAuthStore';
-import { toast } from 'sonner';
+import React from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { User as UserIcon, LayoutDashboard, LogOut } from "lucide-react";
+import { useAuthStore } from "@/store/useAuthStore";
+import { toast } from "sonner";
 
 interface NavbarProps {
   onOpenLogin: () => void;
@@ -15,14 +15,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogin }) => {
   const router = useRouter();
   const { user, isAuthenticated, logout } = useAuthStore();
 
-  const roleUpper = (user?.role || 'USER').toUpperCase();
+  const roleUpper = (user?.role || "USER").toUpperCase();
   const dashboardHref =
-    roleUpper === 'ADMIN' || roleUpper === 'AGENT' ? '/admin/dashboard' : '/dashboard';
+    roleUpper === "ADMIN" || roleUpper === "AGENT"
+      ? "/admin/dashboard"
+      : "/dashboard";
 
   const handleLogout = () => {
     logout();
-    toast.info('Signed out successfully');
-    router.push('/');
+    toast.info("Signed out successfully");
+    router.push("/");
   };
 
   return (
@@ -31,7 +33,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogin }) => {
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-2 group">
           <div className="px-2.5 py-1 bg-black text-white font-serif-luxury font-bold text-lg md:text-xl tracking-wider">
-            CRATE&BARREL
+            HNI Corporation
           </div>
         </Link>
 

@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Navbar } from '@/components/layout/Navbar';
-import { Hero } from '@/components/hero/Hero';
-import { DataOptimization } from '@/components/about/DataOptimization';
-import { ProductSection } from '@/components/products/ProductSection';
-import { HowItWorks } from '@/components/how-it-works/HowItWorks';
-import { TestimonialsSection } from '@/components/testimonials/TestimonialsSection';
-import { InterviewsSection } from '@/components/interviews/InterviewsSection';
-import { Footer } from '@/components/layout/Footer';
-import { LoginModal } from '@/components/ui/LoginModal';
+import React, { useState } from "react";
+import { Navbar } from "@/components/layout/Navbar";
+import { Hero } from "@/components/hero/Hero";
+import { DataOptimization } from "@/components/about/DataOptimization";
+import { ProductSection } from "@/components/products/ProductSection";
+import { HowItWorks } from "@/components/how-it-works/HowItWorks";
+import { TestimonialsSection } from "@/components/testimonials/TestimonialsSection";
+import { InterviewsSection } from "@/components/interviews/InterviewsSection";
+import { Footer } from "@/components/layout/Footer";
+import { LoginModal } from "@/components/ui/LoginModal";
 
 export default function Home() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -41,10 +41,7 @@ export default function Home() {
       <Footer />
 
       {/* Login Dialog Modal */}
-      <LoginModal
-        isOpen={isLoginOpen}
-        onClose={() => setIsLoginOpen(false)}
-      />
+      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
     </main>
   );
 }
