@@ -22,7 +22,7 @@ export default function RegisterPage() {
           <span>Back to Home</span>
         </Link>
         <div className="font-serif-luxury text-xl font-bold tracking-widest text-gray-900 uppercase">
-          CRATE & BARREL
+          HNI Corporatioin
         </div>
       </div>
 

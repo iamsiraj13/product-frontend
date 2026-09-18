@@ -57,11 +57,8 @@ export default function DashboardLayout({
         <div className="flex items-center gap-3">
           {/* Logo Icon Box */}
           <Link href="/dashboard" className="flex items-center gap-3 group">
-            <div className="w-8 h-8 bg-white flex items-center justify-center rounded-xs text-black font-serif font-extrabold text-lg leading-none">
-              c
-            </div>
             <span className="font-serif font-bold text-sm tracking-widest text-white uppercase">
-              CRATE&BARREL
+              HNI Corporation
             </span>
           </Link>
         </div>
@@ -106,7 +103,9 @@ export default function DashboardLayout({
                         : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                     }`}
                   >
-                    <Icon className={`w-4 h-4 ${isActive ? "text-black" : "text-gray-500"}`} />
+                    <Icon
+                      className={`w-4 h-4 ${isActive ? "text-black" : "text-gray-500"}`}
+                    />
                     <span>{item.name}</span>
                   </Link>
                 );

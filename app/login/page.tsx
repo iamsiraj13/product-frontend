@@ -66,16 +66,6 @@ export default function LoginPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4">
         <div className="bg-white py-8 px-6 shadow-2xl rounded-3xl border border-gray-100 sm:px-10 relative">
-          {/* Quick Fill Banner */}
-          <div className="mb-6 p-3.5 bg-amber-50/80 border border-amber-200/80 rounded-2xl">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                Quick Test Login Payload
-              </span>
-            </div>
-          </div>
-
           {/* Error display */}
           {serverErrorMessage && (
             <div className="mb-6 p-4 bg-rose-50 border border-rose-200 rounded-2xl flex items-start gap-3 animate-fadeIn">

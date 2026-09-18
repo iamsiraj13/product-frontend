@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Users,
@@ -12,7 +12,7 @@ import {
   ArrowLeft,
   Sparkles,
   X,
-} from 'lucide-react';
+} from "lucide-react";
 
 interface AdminSidebarProps {
   isOpenMobile: boolean;
@@ -25,23 +25,28 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
 }) => {
   const pathname = usePathname();
 
-  const navItems: { href: string; label: string; icon: React.ElementType; badge?: string }[] = [
+  const navItems: {
+    href: string;
+    label: string;
+    icon: React.ElementType;
+    badge?: string;
+  }[] = [
     {
-      href: '/admin/dashboard',
-      label: 'Dashboard',
+      href: "/admin/dashboard",
+      label: "Dashboard",
       icon: LayoutDashboard,
     },
     {
-      href: '/admin/dashboard/users',
-      label: 'User Management',
+      href: "/admin/dashboard/users",
+      label: "User Management",
       icon: Users,
-      badge: '142',
+      badge: "142",
     },
     {
-      href: '/admin/dashboard/products',
-      label: 'Product',
+      href: "/admin/dashboard/products",
+      label: "Product",
       icon: Package,
-      badge: '38',
+      badge: "38",
     },
   ];
 
@@ -55,7 +60,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           </div>
           <div>
             <span className="font-serif-luxury text-base font-bold tracking-wider text-white block leading-tight">
-              CRATE&BARREL
+              HNI Corporation
             </span>
             <span className="text-[10px] text-amber-400 font-medium tracking-widest uppercase flex items-center gap-1">
               <ShieldCheck className="w-3 h-3" /> Admin Portal
@@ -82,8 +87,8 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive =
-            item.href === '/admin/dashboard'
-              ? pathname === '/admin/dashboard' || pathname === '/admin'
+            item.href === "/admin/dashboard"
+              ? pathname === "/admin/dashboard" || pathname === "/admin"
               : pathname.startsWith(item.href);
 
           return (
@@ -93,16 +98,16 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
               onClick={() => setIsOpenMobile(false)}
               className={`w-full flex items-center justify-between px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 cursor-pointer group ${
                 isActive
-                  ? 'bg-gradient-to-r from-amber-500/20 to-amber-500/5 text-amber-300 border border-amber-500/30 shadow-sm'
-                  : 'text-slate-300 hover:bg-slate-900 hover:text-white border border-transparent'
+                  ? "bg-gradient-to-r from-amber-500/20 to-amber-500/5 text-amber-300 border border-amber-500/30 shadow-sm"
+                  : "text-slate-300 hover:bg-slate-900 hover:text-white border border-transparent"
               }`}
             >
               <div className="flex items-center gap-3">
                 <div
                   className={`p-2 rounded-lg transition-colors ${
                     isActive
-                      ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/30'
-                      : 'bg-slate-900 text-slate-400 group-hover:text-white group-hover:bg-slate-800'
+                      ? "bg-amber-400 text-slate-950 shadow-md shadow-amber-400/30"
+                      : "bg-slate-900 text-slate-400 group-hover:text-white group-hover:bg-slate-800"
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -111,18 +116,9 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
               </div>
 
               <div className="flex items-center gap-2">
-                {item.badge && (
-                  <span
-                    className={`text-[10px] px-2 py-0.5 rounded-full font-bold font-mono ${
-                      isActive
-                        ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30'
-                        : 'bg-slate-800 text-slate-400 group-hover:bg-slate-700 group-hover:text-slate-200'
-                    }`}
-                  >
-                    {item.badge}
-                  </span>
+                {isActive && (
+                  <ChevronRight className="w-4 h-4 text-amber-400" />
                 )}
-                {isActive && <ChevronRight className="w-4 h-4 text-amber-400" />}
               </div>
             </Link>
           );
@@ -159,10 +155,11 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
             className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity"
             onClick={() => setIsOpenMobile(false)}
           />
-          <div className="relative w-72 max-w-full h-full z-10">{sidebarContent}</div>
+          <div className="relative w-72 max-w-full h-full z-10">
+            {sidebarContent}
+          </div>
         </div>
       )}
     </>
   );
 };
-

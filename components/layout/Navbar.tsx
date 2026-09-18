@@ -57,13 +57,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogin }) => {
               </button>
             </div>
           ) : (
-            <button
-              onClick={onOpenLogin}
+            <Link
+              href="/register"
+              // onClick={onOpenLogin}
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-black hover:bg-gray-800 text-white text-xs font-semibold uppercase tracking-wider rounded-sm transition-all shadow-sm active:scale-95 cursor-pointer"
             >
               <UserIcon className="w-3.5 h-3.5" />
-              <span>Login</span>
-            </button>
+              <span>Create Account</span>
+            </Link>
           )}
         </div>
       </div>
