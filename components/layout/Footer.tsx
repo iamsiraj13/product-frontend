@@ -91,7 +91,7 @@ export const Footer: React.FC = () => {
         {/* Bottom Bar: Copyright & Scroll-To-Top */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-500 font-medium">
-            © 2026 Crate & Barrel. All Rights Reserved.
+            © 2026 HNI Corporation. All Rights Reserved.
           </p>
 
           <ScrollToTop />

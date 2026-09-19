@@ -1,6 +1,7 @@
 import { apiClient } from './api-client';
 import { ApiResponse } from '@/types/auth';
 import { AdminUser, AdminUsersPaginatedData, CreateAgentPayload, UpdateAdminUserPayload, ModifyBalancePayload } from '@/types/adminUser';
+import { PreGenerateTasksData, UserTasksData } from '@/types/task';
 
 export interface GetAdminUsersParams {
   page?: number;
@@ -33,7 +34,16 @@ export const adminUsersApi = {
     const response = await apiClient.post<ApiResponse<AdminUser>>(`/admin/users/${id}/balance`, payload);
     return response.data;
   },
+  getUserTasks: async (userId: string): Promise<ApiResponse<UserTasksData>> => {
+    const response = await apiClient.get<ApiResponse<UserTasksData>>(`/admin/users/${userId}/tasks`);
+    return response.data;
+  },
+  preGenerateTasks: async (userId: string, count: number = 33): Promise<ApiResponse<PreGenerateTasksData>> => {
+    const response = await apiClient.post<ApiResponse<PreGenerateTasksData>>(`/admin/users/${userId}/tasks/pre-generate`, { count });
+    return response.data;
+  },
 };
+
 
 
 

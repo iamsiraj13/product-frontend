@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, Filter, Plus, Edit, Trash2, RefreshCw, AlertCircle, Loader2, MoreVertical, ArrowUpDown } from 'lucide-react';
+import { Search, Filter, Plus, Edit, Trash2, RefreshCw, AlertCircle, Loader2, MoreVertical, ArrowUpDown, ListTodo } from 'lucide-react';
 import { useGetAdminUsers } from '@/hooks/useGetAdminUsers';
 import { CreateUserModal } from '@/components/admin/CreateUserModal';
 import { EditUserModal } from '@/components/admin/EditUserModal';
 import { DeleteUserModal } from '@/components/admin/DeleteUserModal';
 import { ModifyBalanceModal } from '@/components/admin/ModifyBalanceModal';
+import { ManageTasksModal } from '@/components/admin/ManageTasksModal';
 import { AdminUser } from '@/types/adminUser';
 
 // Format date helper
@@ -33,6 +34,7 @@ export default function AdminUsersPage() {
   const [editingUser, setEditingUser] = useState<AdminUser | null>(null);
   const [deletingUser, setDeletingUser] = useState<AdminUser | null>(null);
   const [modifyingBalanceUser, setModifyingBalanceUser] = useState<AdminUser | null>(null);
+  const [managingTasksUser, setManagingTasksUser] = useState<AdminUser | null>(null);
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
 
   const { data, isLoading, isError, refetch, isFetching } = useGetAdminUsers({ page: 1, limit: 50 });
@@ -203,10 +205,10 @@ export default function AdminUsersPage() {
                     <td className="py-4 px-6">
                       <span
                         className={`px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase border ${u.role === 'ADMIN'
-                            ? 'bg-amber-50 text-amber-800 border-amber-200'
-                            : u.role === 'AGENT'
-                              ? 'bg-indigo-50 text-indigo-800 border-indigo-200'
-                              : 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                          ? 'bg-amber-50 text-amber-800 border-amber-200'
+                          : u.role === 'AGENT'
+                            ? 'bg-indigo-50 text-indigo-800 border-indigo-200'
+                            : 'bg-emerald-50 text-emerald-800 border-emerald-200'
                           }`}
                       >
                         {u.role}
@@ -235,7 +237,7 @@ export default function AdminUsersPage() {
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
-                        
+
                         {/* 3-dot Dropdown */}
                         <div className="relative inline-block text-left">
                           <button
@@ -255,7 +257,7 @@ export default function AdminUsersPage() {
                                 className="fixed inset-0 z-20"
                                 onClick={() => setOpenDropdownId(null)}
                               />
-                              <div className="absolute right-0 mt-1 w-40 bg-white rounded-xl shadow-xl border border-slate-200/90 py-1 z-30 animate-in fade-in zoom-in-95 duration-100">
+                              <div className="absolute right-0 mt-1 w-44 bg-white rounded-xl shadow-xl border border-slate-200/90 py-1 z-30 animate-in fade-in zoom-in-95 duration-100">
                                 <button
                                   onClick={() => {
                                     setModifyingBalanceUser(u);
@@ -265,6 +267,16 @@ export default function AdminUsersPage() {
                                 >
                                   <ArrowUpDown className="w-3.5 h-3.5 text-amber-600" />
                                   <span>up and down</span>
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    setManagingTasksUser(u);
+                                    setOpenDropdownId(null);
+                                  }}
+                                  className="w-full text-left px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-indigo-900 hover:bg-indigo-50 flex items-center gap-2 transition-colors cursor-pointer"
+                                >
+                                  <ListTodo className="w-3.5 h-3.5 text-indigo-600" />
+                                  <span>Manage Task</span>
                                 </button>
                               </div>
                             </>
@@ -306,9 +318,13 @@ export default function AdminUsersPage() {
         user={modifyingBalanceUser}
         onClose={() => setModifyingBalanceUser(null)}
       />
+
+      {/* Manage Tasks Modal */}
+      <ManageTasksModal
+        isOpen={!!managingTasksUser}
+        user={managingTasksUser}
+        onClose={() => setManagingTasksUser(null)}
+      />
     </div>
   );
 }
-
-
-

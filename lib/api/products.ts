@@ -72,4 +72,10 @@ export const adminProductsApi = {
   },
 };
 
+export const getHomeProducts = async (): Promise<ApiResponse<ProductItem[]>> => {
+  const response = await apiClient.get<ApiResponse<ProductItem[]>>('/products/home');
+  return response.data;
+};
+
+
 

@@ -8,7 +8,7 @@ export const DataOptimization: React.FC = () => {
     <section className="py-20 md:py-28 bg-[#FAF9F6] border-b border-gray-200/60">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          
+
           {/* Left Text Column */}
           <div className="flex flex-col justify-center">
             <SectionHeading
@@ -17,7 +17,7 @@ export const DataOptimization: React.FC = () => {
               align="left"
               className="mb-6"
             />
-            
+
             <div className="space-y-6 text-gray-600 text-sm md:text-base leading-relaxed">
               <p>
                 Our agent ecosystem provides real-time access to high-end architectural pieces, curated room setups, and luxury home styling tailored to maximize property value and client satisfaction.
@@ -48,14 +48,14 @@ export const DataOptimization: React.FC = () => {
                 alt="Luxury coffee table setup"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              
+
               {/* Overlay VIP Card Mockup matching screenshot */}
               <div className="absolute inset-0 flex items-center justify-center p-6 bg-black/10">
                 <div className="w-72 md:w-80 bg-stone-900 text-white p-6 rounded-xl shadow-2xl backdrop-blur-md border border-stone-700/50 transform -rotate-3 hover:rotate-0 transition-transform duration-300">
                   <div className="flex justify-between items-start mb-8">
                     <div>
                       <span className="font-serif-luxury tracking-widest text-lg font-bold">
-                        Crate&Barrel
+                        HNI Corporation
                       </span>
                       <p className="text-[9px] uppercase tracking-widest text-stone-400 font-semibold">
                         AGENT ELITE CARD
@@ -63,7 +63,7 @@ export const DataOptimization: React.FC = () => {
                     </div>
                     <div className="w-8 h-6 bg-amber-400/80 rounded-sm" />
                   </div>
-                  
+
                   <div className="flex justify-between items-end text-xs tracking-widest font-mono text-stone-300">
                     <span>•••• •••• •••• 8821</span>
                     <span className="text-xs font-serif font-bold text-white tracking-normal">VISA</span>

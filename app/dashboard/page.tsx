@@ -27,81 +27,18 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useProfile } from "@/hooks/useProfile";
 import { toast } from "sonner";
 
-interface DashboardProduct {
-  badge: string;
-  title: string;
-  price: string;
-  image: string;
-}
+import { useHomeProducts } from "@/hooks/useHomeProducts";
 
-const featuredProducts: DashboardProduct[] = [
-  {
-    badge: "#18",
-    title:
-      "82' Loveseat Cloud Couch, Brown Chenille Modern Upholstered 2-Seater Sofa with Tufted Deep Seat & Wood Legs, Comfy Small Love Seat Couch for Living Room Apartment",
-    price: "$2100.00",
-    image:
-      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    badge: "#17",
-    title:
-      '55" Small Boneless Couch, 3-in-1 Boneless Loveseat Sleeper Sofa Bed Convertible Sofa Bed with 4 Pillows, Black Corduroy Boneless Couch for Living Room, Guest Room, Small Space, No Assembly Required',
-    price: "$1699.00",
-    image:
-      "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    badge: "#16",
-    title: 'Ipanema 86" Outdoor Dining Table with Wicker Dining Chairs',
-    price: "$2199.00",
-    image:
-      "https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    badge: "#14",
-    title:
-      'Annie 149" Charcoal Brown Wood Storage Media Console Set by Leanne Ford',
-    price: "$1899.00",
-    image:
-      "https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    badge: "#13",
-    title: "Sogno Chaise Lounge",
-    price: "$745.50",
-    image:
-      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    badge: "#12",
-    title: "Caterina Natural Upholstered Office Chair with Brass Base",
-    price: "$3458.99",
-    image:
-      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    badge: "#11",
-    title: 'Alfresco 108" Black Rectangular Outdoor Dining Table',
-    price: "$1785.50",
-    image:
-      "https://images.unsplash.com/photo-1604014237800-1c9102c219da?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    badge: "#10",
-    title: 'Portico 84" Marble and Warm Brown Oak Rectangular Leg Dining Table',
-    price: "$2915.99",
-    image:
-      "https://images.unsplash.com/photo-1530018607912-eff2daa1bac4?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    badge: "#9",
-    title: "Apero Swivel Accent Chair",
-    price: "$1899.55",
-    image:
-      "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&q=80&w=800",
-  },
-];
+const formatProductPrice = (val: number | string): string => {
+  if (val === undefined || val === null || val === '') return '$0.00';
+  const str = String(val);
+  if (str.startsWith('$')) return str;
+  const num = parseFloat(str);
+  if (isNaN(num)) return str;
+  return `$${num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+};
+
+
 
 const quickActions = [
   {
@@ -197,12 +134,37 @@ function ProfileSummarySkeleton() {
   );
 }
 
+function FeaturedProductsSkeleton() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-5 animate-pulse">
+      {[1, 2, 3, 4, 5, 6].map((i) => (
+        <div
+          key={i}
+          className="bg-white border border-gray-200 overflow-hidden flex flex-col rounded-xs space-y-3"
+        >
+          <div className="w-full h-48 sm:h-52 bg-gray-200" />
+          <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+            <div className="space-y-2">
+              <div className="h-3.5 bg-gray-200 rounded-xs w-5/6" />
+              <div className="h-3.5 bg-gray-200 rounded-xs w-2/3" />
+            </div>
+            <div className="h-3 bg-gray-200 rounded-xs w-24" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function DashboardMainPage() {
   const { user } = useAuthStore();
   const { data: profile, isLoading, isError, refetch } = useProfile();
+  const { data: homeProducts = [], isLoading: isProductsLoading, isError: isProductsError } = useHomeProducts();
   const [copiedCode, setCopiedCode] = useState(false);
 
-  const username = profile?.username || user?.username || "sirajul";
+
+
+  const username = profile?.username || user?.username;
   const rawBalance = profile?.balance ?? user?.balance ?? "0";
   const formattedBalance = `$${Number(rawBalance || 0).toLocaleString("en-US", {
     minimumFractionDigits: 2,
@@ -555,7 +517,7 @@ export default function DashboardMainPage() {
       {/* Banner Section */}
       <div className="bg-[#171717] text-white py-12 sm:py-16 px-8 rounded-none text-center sm:text-left flex items-center justify-start">
         <h2 className="text-2xl sm:text-3xl font-serif font-medium text-white tracking-wide">
-          Crate & Barrel Awaits
+          HNI Corporation Awaits
         </h2>
       </div>
 
@@ -564,40 +526,53 @@ export default function DashboardMainPage() {
         <h2 className="text-xs font-semibold text-gray-400 tracking-wider uppercase mb-4">
           FEATURED PRODUCTS
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {featuredProducts.map((prod, idx) => (
-            <div
-              key={idx}
-              className="bg-white border border-gray-200 overflow-hidden flex flex-col hover:border-gray-300 transition-all rounded-xs"
-            >
-              {/* Image with badge */}
-              <div className="relative w-full h-48 sm:h-52 bg-gray-100 overflow-hidden">
-                <img
-                  src={prod.image}
-                  alt={prod.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute top-2 left-2 bg-black/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-2xs">
-                  {prod.badge}
+        {isProductsLoading ? (
+          <FeaturedProductsSkeleton />
+        ) : isProductsError ? (
+          <div className="bg-white border border-gray-200 p-6 text-center rounded-xs">
+            <p className="text-xs text-gray-500">Unable to load featured products at this time.</p>
+          </div>
+        ) : homeProducts.length === 0 ? (
+          <div className="bg-white border border-gray-200 p-6 text-center rounded-xs">
+            <p className="text-xs text-gray-500">No featured products available at the moment.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {homeProducts.map((prod, idx) => (
+              <div
+                key={prod.id || idx}
+                className="bg-white border border-gray-200 overflow-hidden flex flex-col hover:border-gray-300 transition-all rounded-xs"
+              >
+                {/* Image with badge */}
+                <div className="relative w-full h-48 sm:h-52 bg-gray-100 overflow-hidden">
+                  <img
+                    src={prod.image}
+                    alt={prod.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute top-2 left-2 bg-black/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-2xs">
+                    #{idx + 1}
+                  </div>
+                </div>
+
+                {/* Product Info */}
+                <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                  <h3 className="text-xs sm:text-sm font-semibold text-gray-900 leading-snug line-clamp-4">
+                    {prod.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 font-medium">
+                    Price:{" "}
+                    <span className="text-gray-900 font-semibold">
+                      {formatProductPrice(prod.price)}
+                    </span>
+                  </p>
                 </div>
               </div>
-
-              {/* Product Info */}
-              <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
-                <h3 className="text-xs sm:text-sm font-semibold text-gray-900 leading-snug line-clamp-4">
-                  {prod.title}
-                </h3>
-                <p className="text-xs text-gray-500 font-medium">
-                  Price:{" "}
-                  <span className="text-gray-900 font-semibold">
-                    {prod.price}
-                  </span>
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
 }
+
