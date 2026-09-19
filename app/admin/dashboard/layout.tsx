@@ -14,14 +14,40 @@ export default function AdminDashboardLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { user, isAuthenticated, logout } = useAuthStore();
+  const { user, isAuthenticated, logout, _hasHydrated, setHasHydrated } = useAuthStore();
   const [isOpenMobileSidebar, setIsOpenMobileSidebar] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/');
+    setIsMounted(true);
+    if (useAuthStore.persist?.hasHydrated()) {
+      setHasHydrated(true);
     }
-  }, [isAuthenticated, router]);
+  }, [setHasHydrated]);
+
+  useEffect(() => {
+    if (isMounted && _hasHydrated) {
+      if (!isAuthenticated) {
+        router.push('/');
+      }
+    }
+  }, [isAuthenticated, _hasHydrated, isMounted, router]);
+
+  // Prevent premature redirect or UI flash while session is rehydrating on reload
+  if (!isMounted || !_hasHydrated) {
+    return (
+      <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-4 border-amber-600 border-t-transparent rounded-full animate-spin" />
+          <p className="text-xs text-slate-500 font-medium">Loading session...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   const handleLogout = () => {
     logout();

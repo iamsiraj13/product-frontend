@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { User as UserIcon, LayoutDashboard, LogOut } from "lucide-react";
@@ -13,7 +13,15 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenLogin }) => {
   const router = useRouter();
-  const { user, isAuthenticated, logout } = useAuthStore();
+  const { user, isAuthenticated, logout, _hasHydrated, setHasHydrated } = useAuthStore();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    if (useAuthStore.persist?.hasHydrated()) {
+      setHasHydrated(true);
+    }
+  }, [setHasHydrated]);
 
   const roleUpper = (user?.role || "USER").toUpperCase();
   const dashboardHref =
@@ -27,6 +35,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogin }) => {
     router.push("/");
   };
 
+  const showAuthenticatedUI = isMounted && _hasHydrated && isAuthenticated && user;
+
   return (
     <header className="sticky top-0 z-40 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-xs transition-all">
       <div className="max-w-7xl mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
@@ -39,7 +49,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogin }) => {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-3">
-          {isAuthenticated && user ? (
+          {showAuthenticatedUI ? (
             <div className="flex items-center gap-3">
               <Link
                 href={dashboardHref}

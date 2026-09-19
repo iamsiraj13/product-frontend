@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -21,7 +21,38 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, logout } = useAuthStore();
+  const { user, isAuthenticated, logout, _hasHydrated, setHasHydrated } = useAuthStore();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    if (useAuthStore.persist?.hasHydrated()) {
+      setHasHydrated(true);
+    }
+  }, [setHasHydrated]);
+
+  useEffect(() => {
+    if (isMounted && _hasHydrated) {
+      if (!isAuthenticated) {
+        router.push("/");
+      }
+    }
+  }, [isAuthenticated, _hasHydrated, isMounted, router]);
+
+  if (!isMounted || !_hasHydrated) {
+    return (
+      <div className="min-h-screen bg-[#fafafa] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-4 border-gray-900 border-t-transparent rounded-full animate-spin" />
+          <p className="text-xs text-gray-500 font-medium">Loading session...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   const handleLogout = () => {
     logout();
