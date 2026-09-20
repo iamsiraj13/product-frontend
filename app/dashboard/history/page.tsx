@@ -1,10 +1,17 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
-import { History as HistoryIcon, Loader2, RefreshCw, Star, X, CheckCircle2, Package, Play } from "lucide-react";
-import { userTasksApi } from "@/lib/api/userTasks";
-import { extractErrorMessage } from "@/lib/api/api-client";
-import { UserTaskItem } from "@/types/task";
+import React, { useState } from "react";
+import {
+  History as HistoryIcon,
+  Loader2,
+  RefreshCw,
+  Star,
+  X,
+  CheckCircle2,
+  Package,
+} from "lucide-react";
+import { usePendingTask } from "@/hooks/usePendingTask";
+import { useSubmitTask } from "@/hooks/useSubmitTask";
 import { toast } from "sonner";
 
 const formatImageUrl = (url?: string): string => {
@@ -30,105 +37,64 @@ const COMMENT_OPTIONS = [
 ];
 
 export default function DashboardHistoryPage() {
-  const [activeTab, setActiveTab] = useState<"All" | "Pending" | "Completed">("All");
-  const [pendingTask, setPendingTask] = useState<UserTaskItem | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [isStarting, setIsStarting] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<"All" | "Pending" | "Completed">(
+    "All",
+  );
 
-  // Review / Submit Modal State
+  // Modal State
   const [reviewModalOpen, setReviewModalOpen] = useState<boolean>(false);
-  const [selectedCommentIndex, setSelectedCommentIndex] = useState<number>(0);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [selectedCommentIndex, setSelectedCommentIndex] = useState<
+    number | null
+  >(0);
 
-  const fetchPendingTask = useCallback(async (showToast = false) => {
-    if (showToast) setRefreshing(true);
-    try {
-      const response = await userTasksApi.getPendingTask();
-      if (response.success) {
-        setPendingTask(response.data);
-      }
-      if (showToast) {
-        toast.success("History refreshed");
-      }
-    } catch (error) {
-      const msg = extractErrorMessage(error);
-      toast.error(msg);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  }, []);
+  // TanStack Query Hooks
+  const {
+    data: pendingTaskResponse,
+    isLoading: loading,
+    isRefetching: refreshing,
+    refetch: refetchPendingTask,
+  } = usePendingTask();
 
-  useEffect(() => {
-    fetchPendingTask();
-  }, [fetchPendingTask]);
+  const submitTaskMutation = useSubmitTask({
+    onSuccessCallback: () => {
+      setReviewModalOpen(false);
+      setSelectedCommentIndex(0);
+    },
+  });
 
-  const handleActionClick = async () => {
-    if (!pendingTask?.id) return;
+  const pendingTask = pendingTaskResponse?.data || null;
+  const isSubmitting = submitTaskMutation.isPending;
 
-    if (pendingTask.status === "GENERATED") {
-      setIsStarting(true);
-      const toastId = toast.loading("Starting task...");
-
-      try {
-        const response = await userTasksApi.startTask(pendingTask.id);
-        toast.dismiss(toastId);
-
-        if (response.success) {
-          if (response.data && response.data.id) {
-            setPendingTask(response.data);
-          } else {
-            setPendingTask((prev) => (prev ? { ...prev, status: "IN_PROGRESS" } : null));
-          }
-          toast.success("Task started successfully!");
-          setReviewModalOpen(true);
-        } else {
-          toast.error("Failed to start task.");
-        }
-      } catch (error) {
-        toast.dismiss(toastId);
-        const errorMessage = extractErrorMessage(error);
-        toast.error(errorMessage);
-      } finally {
-        setIsStarting(false);
-      }
-    } else {
-      setReviewModalOpen(true);
+  const handleRefresh = async () => {
+    const res = await refetchPendingTask();
+    if (res.isSuccess) {
+      toast.success("History refreshed");
     }
   };
 
-  const handleSubmitReview = async () => {
+  const handleActionClick = () => {
+    if (!pendingTask?.id) return;
+    setReviewModalOpen(true);
+  };
+
+  const handleSubmitReview = () => {
     if (!pendingTask?.id || selectedCommentIndex === null) return;
     const selectedComment = COMMENT_OPTIONS[selectedCommentIndex];
-    setIsSubmitting(true);
-    const toastId = toast.loading("Submitting task...");
 
-    try {
-      const response = await userTasksApi.submitTask(pendingTask.id, {
+    submitTaskMutation.mutate({
+      taskId: pendingTask.id,
+      payload: {
         rating: 5,
         comment: selectedComment,
-      });
-      toast.dismiss(toastId);
-
-      if (response.success) {
-        toast.success("Task submitted successfully!");
-        setReviewModalOpen(false);
-        setPendingTask(null);
-        fetchPendingTask();
-      } else {
-        toast.error("Failed to submit task.");
-      }
-    } catch (error) {
-      toast.dismiss(toastId);
-      const errorMessage = extractErrorMessage(error);
-      toast.error(errorMessage);
-    } finally {
-      setIsSubmitting(false);
-    }
+      },
+    });
   };
 
-  const tabs: Array<"All" | "Pending" | "Completed"> = ["All", "Pending", "Completed"];
+  const tabs: Array<"All" | "Pending" | "Completed"> = [
+    "All",
+    "Pending",
+    "Completed",
+  ];
 
   const showPendingSection = activeTab === "All" || activeTab === "Pending";
   const showCompletedSection = activeTab === "Completed";
@@ -146,12 +112,14 @@ export default function DashboardHistoryPage() {
           </p>
         </div>
         <button
-          onClick={() => fetchPendingTask(true)}
+          onClick={handleRefresh}
           disabled={refreshing || loading}
           className="p-2 border border-gray-200 hover:bg-gray-50 text-gray-600 transition-colors cursor-pointer rounded-none"
           title="Refresh History"
         >
-          <RefreshCw className={`w-4 h-4 ${refreshing || loading ? "animate-spin" : ""}`} />
+          <RefreshCw
+            className={`w-4 h-4 ${refreshing || loading ? "animate-spin" : ""}`}
+          />
         </button>
       </div>
 
@@ -162,10 +130,11 @@ export default function DashboardHistoryPage() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`text-xs sm:text-sm transition-colors cursor-pointer pb-2.5 ${activeTab === tab
-                ? "border-b-2 border-black font-semibold text-black"
-                : "text-gray-500 hover:text-black font-medium"
-                }`}
+              className={`text-xs sm:text-sm transition-colors cursor-pointer pb-2.5 ${
+                activeTab === tab
+                  ? "border-b-2 border-black font-semibold text-black"
+                  : "text-gray-500 hover:text-black font-medium"
+              }`}
             >
               {tab}
             </button>
@@ -177,7 +146,9 @@ export default function DashboardHistoryPage() {
       {loading ? (
         <div className="bg-white border border-gray-200 p-14 text-center rounded-none shadow-2xs my-4">
           <Loader2 className="w-8 h-8 text-black animate-spin mx-auto mb-3" />
-          <p className="text-xs sm:text-sm text-gray-500">Loading pending task...</p>
+          <p className="text-xs sm:text-sm text-gray-500">
+            Loading pending task...
+          </p>
         </div>
       ) : (
         <>
@@ -213,7 +184,9 @@ export default function DashboardHistoryPage() {
                               <div className="w-10 h-10 bg-gray-50 border border-gray-200 flex-shrink-0 flex items-center justify-center overflow-hidden">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
-                                  src={formatImageUrl(pendingTask.product.image)}
+                                  src={formatImageUrl(
+                                    pendingTask.product.image,
+                                  )}
                                   alt={pendingTask.product.title || "Product"}
                                   className="w-full h-full object-contain p-1"
                                 />
@@ -223,7 +196,7 @@ export default function DashboardHistoryPage() {
                                 <Package className="w-5 h-5 stroke-1" />
                               </div>
                             )}
-                            <div className="min-w-0 max-w-[220px] sm:max-w-xs">
+                            <div className="min-w-0 max-w-55 sm:max-w-xs">
                               <p className="font-semibold text-gray-900 truncate">
                                 {pendingTask.product?.title || "Product"}
                               </p>
@@ -255,10 +228,13 @@ export default function DashboardHistoryPage() {
 
                         {/* Status Column */}
                         <td className="py-3 px-4 whitespace-nowrap">
-                          <span className={`px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide border ${pendingTask.status === "GENERATED"
-                            ? "bg-blue-50 text-blue-700 border-blue-200"
-                            : "bg-amber-50 text-amber-700 border-amber-200"
-                            }`}>
+                          <span
+                            className={`px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide border ${
+                              pendingTask.status === "GENERATED"
+                                ? "bg-blue-50 text-blue-700 border-blue-200"
+                                : "bg-amber-50 text-amber-700 border-amber-200"
+                            }`}
+                          >
                             {pendingTask.status}
                           </span>
                         </td>
@@ -267,15 +243,10 @@ export default function DashboardHistoryPage() {
                         <td className="py-3 px-4 whitespace-nowrap text-right">
                           <button
                             onClick={handleActionClick}
-                            disabled={isStarting}
-                            className="bg-black hover:bg-gray-800 disabled:bg-gray-600 text-white text-xs font-semibold px-4 py-2 rounded-none transition-colors cursor-pointer inline-flex items-center gap-1.5 shadow-2xs"
+                            className="bg-black hover:bg-gray-800 text-white text-xs font-semibold px-4 py-2 rounded-none transition-colors cursor-pointer inline-flex items-center gap-1.5 shadow-2xs"
                           >
-                            {isStarting ? (
-                              <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                            ) : (
-                              <CheckCircle2 className="w-3.5 h-3.5" />
-                            )}
-                            <span>{isStarting ? "Starting..." : "Submit"}</span>
+                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            <span>Submit</span>
                           </button>
                         </td>
                       </tr>
@@ -287,11 +258,14 @@ export default function DashboardHistoryPage() {
           ) : null}
 
           {/* Empty State Box when no pending task or on Completed tab */}
-          {((!pendingTask || !pendingTask.id) && showPendingSection) || showCompletedSection ? (
+          {((!pendingTask || !pendingTask.id) && showPendingSection) ||
+          showCompletedSection ? (
             <div className="bg-white border border-gray-200 p-14 sm:p-20 text-center rounded-none shadow-2xs my-4">
               <HistoryIcon className="w-10 h-10 text-gray-400 mx-auto mb-3" />
               <h3 className="text-base font-bold text-gray-900">
-                {showCompletedSection ? "No Completed Tasks" : "No Pending Tasks"}
+                {showCompletedSection
+                  ? "No Completed Tasks"
+                  : "No Pending Tasks"}
               </h3>
               <p className="text-xs sm:text-sm text-gray-500 mt-1">
                 {showCompletedSection
@@ -311,10 +285,10 @@ export default function DashboardHistoryPage() {
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
               <div>
                 <h3 className="font-serif font-medium text-lg text-gray-900">
-                  Submit Pending Task
+                  Product Review
                 </h3>
                 <p className="text-xs text-gray-400">
-                  Select a review comment to submit task #{pendingTask.stepNumber}
+                  Select a review comment to complete task
                 </p>
               </div>
               <button
@@ -340,11 +314,11 @@ export default function DashboardHistoryPage() {
                 ))}
               </div>
               <span className="text-xs text-gray-400 block font-medium">
-                5.0 / 5.0 Rating
+                5.0 / 5.0 (Read-only)
               </span>
             </div>
 
-            {/* Comment Options */}
+            {/* 5 Comment Options (Checkboxes - Single Select) */}
             <div className="space-y-2">
               <label className="text-xs font-semibold text-gray-700 block uppercase tracking-wide">
                 Select Comment
@@ -356,10 +330,11 @@ export default function DashboardHistoryPage() {
                     <div
                       key={index}
                       onClick={() => setSelectedCommentIndex(index)}
-                      className={`p-3 border cursor-pointer transition-all flex items-start gap-3 rounded-none ${isSelected
-                        ? "border-black bg-gray-50 text-gray-900 shadow-xs"
-                        : "border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50/50"
-                        }`}
+                      className={`p-3 border cursor-pointer transition-all flex items-start gap-3 rounded-none ${
+                        isSelected
+                          ? "border-black bg-gray-50 text-gray-900 shadow-xs"
+                          : "border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50/50"
+                      }`}
                     >
                       <input
                         type="checkbox"
@@ -376,7 +351,7 @@ export default function DashboardHistoryPage() {
               </div>
             </div>
 
-            {/* Submit Action */}
+            {/* Submit / Finish Action */}
             <div className="pt-2">
               <button
                 onClick={handleSubmitReview}

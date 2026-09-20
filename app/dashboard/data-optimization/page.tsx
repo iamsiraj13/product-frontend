@@ -1,7 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { Zap, DollarSign, X, Play, Package, Loader2, Star, CheckCircle2 } from "lucide-react";
+import {
+  Zap,
+  DollarSign,
+  X,
+  Play,
+  Package,
+  Loader2,
+  Star,
+  CheckCircle2,
+} from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useProfile } from "@/hooks/useProfile";
 import { userTasksApi } from "@/lib/api/userTasks";
@@ -40,7 +49,9 @@ export default function DataOptimizationPage() {
   const [taskModalOpen, setTaskModalOpen] = useState(false);
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [generatedTask, setGeneratedTask] = useState<UserTaskItem | null>(null);
-  const [selectedCommentIndex, setSelectedCommentIndex] = useState<number | null>(0);
+  const [selectedCommentIndex, setSelectedCommentIndex] = useState<
+    number | null
+  >(0);
 
   const rawBalance = profile?.balance ?? user?.balance ?? "0";
   const balance = `$${Number(rawBalance || 0).toLocaleString("en-US", {
@@ -50,7 +61,9 @@ export default function DataOptimizationPage() {
 
   const totalTask = profile?.todayTaskProgress?.dailyLimit ?? 0;
   const completedTask = profile?.todayTaskProgress?.completedToday ?? 0;
-  const totalCommission = `$${Number(profile?.commissionSummary?.totalEarned || 0).toLocaleString("en-US", {
+  const totalCommission = `$${Number(
+    profile?.commissionSummary?.totalEarned || 0,
+  ).toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;
@@ -93,7 +106,9 @@ export default function DataOptimizationPage() {
         if (response.data && response.data.id) {
           setGeneratedTask(response.data);
         } else {
-          setGeneratedTask((prev) => (prev ? { ...prev, status: "IN_PROGRESS" } : null));
+          setGeneratedTask((prev) =>
+            prev ? { ...prev, status: "IN_PROGRESS" } : null,
+          );
         }
         toast.success("Task started successfully!");
         setTaskModalOpen(false);
@@ -157,14 +172,15 @@ export default function DataOptimizationPage() {
 
       {/* Top Dark Card */}
       <div className="bg-[#171717] text-white p-6 sm:p-8 rounded-none shadow-xs">
-        <span className="text-xs text-gray-400 font-medium block">Current Balance</span>
+        <span className="text-xs text-gray-400 font-medium block">
+          Current Balance
+        </span>
         <h2 className="text-4xl sm:text-5xl font-serif text-white font-medium tracking-tight mt-1 mb-6">
           {balance}
         </h2>
 
         {/* 3 Sub-Cards Row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
-
           <div className="bg-[#262626] p-4 text-center rounded-none flex flex-col items-center justify-center">
             <Zap className="w-4 h-4 text-gray-300 mb-1" />
             <span className="text-xl font-bold text-white leading-tight">
@@ -175,7 +191,6 @@ export default function DataOptimizationPage() {
             </span>
           </div>
 
-
           <div className="bg-[#262626] p-4 text-center rounded-none flex flex-col items-center justify-center">
             <CheckCircle2 className="w-4 h-4 text-gray-300 mb-1" />
             <span className="text-xl font-bold text-white leading-tight">
@@ -185,7 +200,6 @@ export default function DataOptimizationPage() {
               Completed Task
             </span>
           </div>
-
 
           <div className="bg-[#262626] p-4 text-center rounded-none flex flex-col items-center justify-center">
             <DollarSign className="w-4 h-4 text-gray-300 mb-1" />
@@ -266,7 +280,10 @@ export default function DataOptimizationPage() {
                   {generatedTask.product?.title || "Product Title Unavailable"}
                 </h4>
                 <p className="text-xs text-gray-400 mt-0.5">
-                  Status: <span className="font-semibold text-gray-700">{generatedTask.status}</span>
+                  Status:{" "}
+                  <span className="font-semibold text-gray-700">
+                    {generatedTask.status}
+                  </span>
                 </p>
               </div>
 
@@ -275,25 +292,37 @@ export default function DataOptimizationPage() {
                 <div>
                   <span className="text-gray-400 block text-[11px]">Price</span>
                   <span className="font-bold text-gray-900 text-sm">
-                    ${generatedTask.priceSnapshot || generatedTask.product?.price || "0.00"}
+                    $
+                    {generatedTask.priceSnapshot ||
+                      generatedTask.product?.price ||
+                      "0.00"}
                   </span>
                 </div>
                 <div>
-                  <span className="text-gray-400 block text-[11px]">Commission</span>
+                  <span className="text-gray-400 block text-[11px]">
+                    Commission
+                  </span>
                   <span className="font-bold text-emerald-600 text-sm">
-                    ${generatedTask.commissionSnapshot || generatedTask.product?.commission || "0.00"}
+                    $
+                    {generatedTask.commissionSnapshot ||
+                      generatedTask.product?.commission ||
+                      "0.00"}
                   </span>
                 </div>
                 {generatedTask.product?.commissionRate && (
                   <div>
-                    <span className="text-gray-400 block text-[11px]">Commission Rate</span>
+                    <span className="text-gray-400 block text-[11px]">
+                      Commission Rate
+                    </span>
                     <span className="font-medium text-gray-700">
                       {generatedTask.product.commissionRate}%
                     </span>
                   </div>
                 )}
                 <div>
-                  <span className="text-gray-400 block text-[11px]">Task ID</span>
+                  <span className="text-gray-400 block text-[11px]">
+                    Task ID
+                  </span>
                   <span className="font-mono text-[10px] text-gray-500 truncate block">
                     {generatedTask.id.slice(0, 8)}...
                   </span>
@@ -328,7 +357,7 @@ export default function DataOptimizationPage() {
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
               <div>
                 <h3 className="font-serif font-medium text-lg text-gray-900">
-                  Task Review
+                  Product Review
                 </h3>
                 <p className="text-xs text-gray-400">
                   Select a review comment to complete task
@@ -373,10 +402,11 @@ export default function DataOptimizationPage() {
                     <div
                       key={index}
                       onClick={() => setSelectedCommentIndex(index)}
-                      className={`p-3 border cursor-pointer transition-all flex items-start gap-3 rounded-none ${isSelected
-                        ? "border-black bg-gray-50 text-gray-900 shadow-xs"
-                        : "border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50/50"
-                        }`}
+                      className={`p-3 border cursor-pointer transition-all flex items-start gap-3 rounded-none ${
+                        isSelected
+                          ? "border-black bg-gray-50 text-gray-900 shadow-xs"
+                          : "border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50/50"
+                      }`}
                     >
                       <input
                         type="checkbox"
@@ -414,6 +444,3 @@ export default function DataOptimizationPage() {
     </div>
   );
 }
-
-
-

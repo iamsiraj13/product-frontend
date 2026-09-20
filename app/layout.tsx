@@ -11,9 +11,16 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Crate & Barrel | Luxury Living for Lifetime Agents",
-  description: "Exclusive luxury interior furniture solutions and staging packages tailored for top-performing real estate professionals.",
-  keywords: ["Crate & Barrel", "Luxury Furniture", "Real Estate Staging", "Lifetime Agents", "Interior Design"],
+  title: "HNI Corporation | Luxury Living for Lifetime Agents",
+  description:
+    "Exclusive luxury interior furniture solutions and staging packages tailored for top-performing real estate professionals.",
+  keywords: [
+    "HNI Corporation",
+    "Luxury Furniture",
+    "Real Estate Staging",
+    "Lifetime Agents",
+    "Interior Design",
+  ],
 };
 
 export default function RootLayout({
@@ -22,10 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${montserrat.variable} h-full antialiased`}
-    >
+    <html lang="en" className={`${montserrat.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-[#FAF9F6] text-[#1A1A1A] font-sans">
         <QueryProvider>
           {children}
@@ -35,4 +39,3 @@ export default function RootLayout({
     </html>
   );
 }
-
