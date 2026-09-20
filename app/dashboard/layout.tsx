@@ -10,6 +10,8 @@ import {
   LogOut,
   User as UserIcon,
   MessageSquare,
+  Menu,
+  X,
 } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { toast } from "sonner";
@@ -23,6 +25,7 @@ export default function DashboardLayout({
   const router = useRouter();
   const { user, isAuthenticated, logout, _hasHydrated, setHasHydrated } = useAuthStore();
   const [isMounted, setIsMounted] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -38,6 +41,11 @@ export default function DashboardLayout({
       }
     }
   }, [isAuthenticated, _hasHydrated, isMounted, router]);
+
+  // Close mobile sidebar on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   if (!isMounted || !_hasHydrated) {
     return (
@@ -86,6 +94,19 @@ export default function DashboardLayout({
       {/* Top Header Bar */}
       <header className="bg-[#111111] text-white h-14 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40 shadow-xs border-b border-gray-800">
         <div className="flex items-center gap-3">
+          {/* Mobile menu toggle button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-1.5 rounded-md md:hidden hover:bg-gray-800 text-gray-300 hover:text-white transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-700"
+            aria-label="Toggle Navigation"
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
+          </button>
+
           {/* Logo Icon Box */}
           <Link href="/dashboard" className="flex items-center gap-3 group">
             <span className="font-serif font-bold text-sm tracking-widest text-white uppercase">
@@ -114,9 +135,22 @@ export default function DashboardLayout({
 
       {/* Main Container: Sidebar + Content */}
       <div className="flex flex-1 relative">
+        {/* Mobile Backdrop */}
+        {isMobileMenuOpen && (
+          <div
+            className="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity"
+            onClick={() => setIsMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+        )}
+
         {/* Left Sidebar */}
-        <aside className="w-56 sm:w-60 bg-white border-r border-gray-200 flex flex-col shrink-0 min-h-[calc(100vh-3.5rem)]">
-          <nav className="flex-1 divide-y divide-gray-100">
+        <aside
+          className={`fixed top-14 bottom-0 left-0 z-50 w-64 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-200 ease-in-out md:static md:top-auto md:z-auto md:w-60 md:min-h-[calc(100vh-3.5rem)] md:translate-x-0 ${
+            isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <nav className="flex-1 divide-y divide-gray-100 overflow-y-auto">
             <div className="py-1">
               {navItems.map((item) => {
                 const isActive = item.exact
@@ -128,6 +162,7 @@ export default function DashboardLayout({
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
                     className={`flex items-center gap-3 px-4 py-3.5 text-xs sm:text-sm font-medium transition-colors border-b border-gray-100 ${
                       isActive
                         ? "text-gray-900 bg-gray-50/80 font-semibold"
@@ -143,7 +178,10 @@ export default function DashboardLayout({
               })}
 
               <button
-                onClick={handleLogout}
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  handleLogout();
+                }}
                 className="w-full flex items-center gap-3 px-4 py-3.5 text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors cursor-pointer text-left border-b border-gray-100"
               >
                 <LogOut className="w-4 h-4 text-gray-500" />
@@ -154,7 +192,7 @@ export default function DashboardLayout({
         </aside>
 
         {/* Main Content Area */}
-        <main className="flex-1 p-6 sm:p-8 max-w-7xl w-full mx-auto overflow-x-hidden">
+        <main className="flex-1 p-4 sm:p-6 md:p-8 max-w-7xl w-full mx-auto overflow-x-hidden">
           {children}
         </main>
       </div>
