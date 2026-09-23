@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState, useRef, useImperativeHandle, forwardRef } from "react";
-import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
+import React, { useEffect, useRef, useImperativeHandle, forwardRef } from "react";
+import Script from "next/script";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export interface TawkChatWidgetRef {
@@ -16,8 +16,6 @@ interface TawkChatWidgetProps {
   widgetId?: string;
 }
 
-const noop = () => { };
-
 const TawkChatWidget = forwardRef<TawkChatWidgetRef, TawkChatWidgetProps>(
   (
     {
@@ -26,19 +24,13 @@ const TawkChatWidget = forwardRef<TawkChatWidgetRef, TawkChatWidgetProps>(
     },
     ref
   ) => {
-    const [mounted, setMounted] = useState(false);
-    const tawkRef = useRef<any>(null);
     const { user } = useAuthStore();
+    const isLoadedRef = useRef(false);
 
-    useEffect(() => {
-      setMounted(true);
-    }, []);
-
-    // Synchronize visitor attributes when user logs in or tawk loads
     const syncUserAttributes = () => {
-      if (tawkRef.current && user) {
+      if (typeof window !== "undefined" && window.Tawk_API && typeof window.Tawk_API.setAttributes === "function" && user) {
         try {
-          tawkRef.current.setAttributes(
+          window.Tawk_API.setAttributes(
             {
               name: user.username || "Visitor",
               email: user.email || "",
@@ -59,77 +51,70 @@ const TawkChatWidget = forwardRef<TawkChatWidgetRef, TawkChatWidgetProps>(
       }
     };
 
-    const handleOnLoad = () => {
-      syncUserAttributes();
-    };
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        window.Tawk_API = window.Tawk_API || {};
+        window.Tawk_LoadStart = new Date();
+
+        const existingOnLoad = window.Tawk_API.onLoad;
+        window.Tawk_API.onLoad = function () {
+          isLoadedRef.current = true;
+          if (typeof existingOnLoad === "function") {
+            existingOnLoad();
+          }
+          syncUserAttributes();
+        };
+      }
+    }, []);
 
     useEffect(() => {
-      if (mounted && user) {
+      if (user) {
         syncUserAttributes();
       }
-    }, [user, mounted]);
+    }, [user]);
 
     useImperativeHandle(ref, () => ({
       maximize: () => {
         try {
-          tawkRef.current?.maximize();
+          window.Tawk_API?.maximize?.();
         } catch (e) {
           console.warn("[Tawk] Maximize failed:", e);
         }
       },
       minimize: () => {
         try {
-          tawkRef.current?.minimize();
+          window.Tawk_API?.minimize?.();
         } catch (e) {
           console.warn("[Tawk] Minimize failed:", e);
         }
       },
       toggle: () => {
         try {
-          tawkRef.current?.toggle();
+          window.Tawk_API?.toggle?.();
         } catch (e) {
           console.warn("[Tawk] Toggle failed:", e);
         }
       },
       popup: () => {
         try {
-          tawkRef.current?.popup();
+          window.Tawk_API?.popup?.();
         } catch (e) {
           console.warn("[Tawk] Popup failed:", e);
         }
       },
     }));
 
-    if (!mounted || !propertyId || !widgetId) {
+    if (!propertyId || !widgetId) {
       return null;
     }
 
     return (
-      <TawkMessengerReact
-        ref={tawkRef}
-        propertyId={propertyId}
-        widgetId={widgetId}
-        onLoad={handleOnLoad}
-        onStatusChange={noop}
-        onBeforeLoad={noop}
-        onBeforeLoaded={noop}
-        onChatMaximized={noop}
-        onChatMinimized={noop}
-        onChatHidden={noop}
-        onChatStarted={noop}
-        onChatEnded={noop}
-        onPrechatSubmit={noop}
-        onOfflineSubmit={noop}
-        onChatMessageVisitor={noop}
-        onChatMessageAgent={noop}
-        onChatMessageSystem={noop}
-        onAgentJoinChat={noop}
-        onAgentLeaveChat={noop}
-        onChatSatisfaction={noop}
-        onVisitorNameChanged={noop}
-        onFileUpload={noop}
-        onTagsUpdated={noop}
-        onUnreadCountChanged={noop}
+      <Script
+        id="tawk-script"
+        strategy="afterInteractive"
+        src={`https://embed.tawk.to/${propertyId}/${widgetId}`}
+        charSet="UTF-8"
+        crossOrigin="anonymous"
       />
     );
   }
