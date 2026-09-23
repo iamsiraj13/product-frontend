@@ -31,8 +31,8 @@ export default function LoginPage() {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "rahim@gmail.com",
-      password: "123456",
+      email: "",
+      password: "",
     },
   });
 
@@ -90,12 +90,11 @@ export default function LoginPage() {
                   {...register("email")}
                   type="email"
                   disabled={isPending}
-                  placeholder="rahim@gmail.com"
-                  className={`w-full pl-10 pr-4 py-3 bg-gray-50 border ${
-                    errors.email
-                      ? "border-rose-400 focus:ring-rose-500"
-                      : "border-gray-200 focus:ring-black"
-                  } rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:border-transparent transition-all disabled:opacity-60`}
+                  placeholder="Enter Your Email"
+                  className={`w-full pl-10 pr-4 py-3 bg-gray-50 border ${errors.email
+                    ? "border-rose-400 focus:ring-rose-500"
+                    : "border-gray-200 focus:ring-black"
+                    } rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:border-transparent transition-all disabled:opacity-60`}
                 />
               </div>
               {errors.email && (
@@ -116,11 +115,10 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   disabled={isPending}
                   placeholder="••••••••••••"
-                  className={`w-full pl-10 pr-10 py-3 bg-gray-50 border ${
-                    errors.password
-                      ? "border-rose-400 focus:ring-rose-500"
-                      : "border-gray-200 focus:ring-black"
-                  } rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:border-transparent transition-all disabled:opacity-60`}
+                  className={`w-full pl-10 pr-10 py-3 bg-gray-50 border ${errors.password
+                    ? "border-rose-400 focus:ring-rose-500"
+                    : "border-gray-200 focus:ring-black"
+                    } rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:border-transparent transition-all disabled:opacity-60`}
                 />
                 <button
                   type="button"

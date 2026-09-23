@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { AddProductModal } from "@/components/admin/AddProductModal";
 import { EditProductModal } from "@/components/admin/EditProductModal";
+import { DeleteProductModal } from "@/components/admin/DeleteProductModal";
 import { useGetProducts } from "@/hooks/useGetProducts";
 import { ProductItem } from "@/types/product";
 
@@ -88,6 +89,9 @@ export default function AdminProductsPage() {
   const [editingProduct, setEditingProduct] = useState<ProductItem | null>(
     null,
   );
+  const [deletingProduct, setDeletingProduct] = useState<ProductItem | null>(
+    null,
+  );
 
   // Debounce search input
   useEffect(() => {
@@ -144,6 +148,16 @@ export default function AdminProductsPage() {
         product={editingProduct}
         onClose={() => setEditingProduct(null)}
         onProductUpdated={() => {
+          refetch();
+        }}
+      />
+
+      {/* Delete Product Modal */}
+      <DeleteProductModal
+        isOpen={!!deletingProduct}
+        product={deletingProduct}
+        onClose={() => setDeletingProduct(null)}
+        onProductDeleted={() => {
           refetch();
         }}
       />
@@ -584,6 +598,7 @@ export default function AdminProductsPage() {
                                     <Edit className="w-4 h-4" />
                                   </button>
                                   <button
+                                    onClick={() => setDeletingProduct(p)}
                                     className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
                                     title="Delete Product"
                                   >
@@ -733,7 +748,11 @@ export default function AdminProductsPage() {
                             >
                               <Edit className="w-4 h-4" />
                             </button>
-                            <button className="p-2 rounded-lg text-rose-500 hover:text-rose-700 hover:bg-rose-100/80 transition-colors">
+                            <button
+                              onClick={() => setDeletingProduct(p)}
+                              className="p-2 rounded-lg text-rose-500 hover:text-rose-700 hover:bg-rose-100/80 transition-colors cursor-pointer"
+                              title="Delete Product"
+                            >
                               <Trash2 className="w-4 h-4" />
                             </button>
                           </div>

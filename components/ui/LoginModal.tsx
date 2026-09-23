@@ -43,8 +43,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "rahim@gmail.com",
-      password: "123456",
+      email: "",
+      password: "",
     },
   });
 
@@ -105,12 +105,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
                 {...register("email")}
                 type="email"
                 disabled={isPending}
-                placeholder="email@example.com"
-                className={`w-full pl-10 pr-4 py-2.5 bg-gray-50 border ${
-                  errors.email
-                    ? "border-rose-400 focus:ring-rose-500"
-                    : "border-gray-200 focus:ring-black"
-                } rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:border-transparent transition-all disabled:opacity-60`}
+                placeholder="Enter Your Email"
+                className={`w-full pl-10 pr-4 py-2.5 bg-gray-50 border ${errors.email
+                  ? "border-rose-400 focus:ring-rose-500"
+                  : "border-gray-200 focus:ring-black"
+                  } rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:border-transparent transition-all disabled:opacity-60`}
               />
             </div>
             {errors.email && (
@@ -132,11 +131,10 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
                 type={showPassword ? "text" : "password"}
                 disabled={isPending}
                 placeholder="••••••••••••"
-                className={`w-full pl-10 pr-10 py-2.5 bg-gray-50 border ${
-                  errors.password
-                    ? "border-rose-400 focus:ring-rose-500"
-                    : "border-gray-200 focus:ring-black"
-                } rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:border-transparent transition-all disabled:opacity-60`}
+                className={`w-full pl-10 pr-10 py-2.5 bg-gray-50 border ${errors.password
+                  ? "border-rose-400 focus:ring-rose-500"
+                  : "border-gray-200 focus:ring-black"
+                  } rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:border-transparent transition-all disabled:opacity-60`}
               />
               <button
                 type="button"

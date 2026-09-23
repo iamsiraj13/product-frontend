@@ -197,7 +197,15 @@ export default function DashboardLayout({
 
       {/* Floating Bottom-Right Chat Button */}
       <div className="fixed bottom-4 right-4 z-50">
-        <button className="bg-[#3b4754] hover:bg-[#2d3742] text-white px-3.5 py-2 rounded-md shadow-lg flex items-center gap-2 text-xs font-semibold cursor-pointer transition-all">
+        <button
+          onClick={() => {
+            if (typeof window !== "undefined" && window.Tawk_API?.toggle) {
+              window.Tawk_API.toggle();
+            }
+          }}
+          className="bg-[#3b4754] hover:bg-[#2d3742] text-white px-3.5 py-2 rounded-md shadow-lg flex items-center gap-2 text-xs font-semibold cursor-pointer transition-all active:scale-95"
+          title="Open Live Chat Support"
+        >
           <MessageSquare className="w-4 h-4 fill-white/20" />
           <span>C&B</span>
         </button>

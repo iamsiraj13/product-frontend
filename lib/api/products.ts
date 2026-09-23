@@ -70,6 +70,15 @@ export const adminProductsApi = {
     );
     return response.data;
   },
+
+  deleteProduct: async (id: string): Promise<ApiResponse<void>> => {
+    const response = await apiClient.delete<ApiResponse<void>>(`/admin/products/${id}`, {
+      headers: {
+        accept: '*/*',
+      },
+    });
+    return response.data;
+  },
 };
 
 export const getHomeProducts = async (): Promise<ApiResponse<ProductItem[]>> => {

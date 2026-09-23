@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import QueryProvider from "@/providers/QueryProvider";
 import { Toaster } from "sonner";
+import TawkChatWidget from "@/components/TawkChatWidget";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#FAF9F6] text-[#1A1A1A] font-sans">
         <QueryProvider>
           {children}
+          <TawkChatWidget />
           <Toaster position="bottom-right" richColors closeButton />
         </QueryProvider>
       </body>
