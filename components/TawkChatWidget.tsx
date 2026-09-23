@@ -16,7 +16,7 @@ interface TawkChatWidgetProps {
   widgetId?: string;
 }
 
-const noop = () => {};
+const noop = () => { };
 
 const TawkChatWidget = forwardRef<TawkChatWidgetRef, TawkChatWidgetProps>(
   (
