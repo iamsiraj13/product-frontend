@@ -157,11 +157,10 @@ export const ModifyBalanceModal: React.FC<ModifyBalanceModalProps> = ({
               <button
                 type="button"
                 onClick={() => setType('CREDIT')}
-                className={`py-3 px-4 rounded-xl border flex items-center justify-center gap-2.5 text-xs font-bold transition-all cursor-pointer ${
-                  type === 'CREDIT'
+                className={`py-3 px-4 rounded-xl border flex items-center justify-center gap-2.5 text-xs font-bold transition-all cursor-pointer ${type === 'CREDIT'
                     ? 'bg-emerald-50 border-emerald-500 text-emerald-800 ring-2 ring-emerald-500/20 shadow-sm'
                     : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
-                }`}
+                  }`}
               >
                 <ArrowUpRight className={`w-4 h-4 ${type === 'CREDIT' ? 'text-emerald-600' : 'text-slate-400'}`} />
                 <span>CREDIT (Add Fund)</span>
@@ -170,11 +169,10 @@ export const ModifyBalanceModal: React.FC<ModifyBalanceModalProps> = ({
               <button
                 type="button"
                 onClick={() => setType('DEBIT')}
-                className={`py-3 px-4 rounded-xl border flex items-center justify-center gap-2.5 text-xs font-bold transition-all cursor-pointer ${
-                  type === 'DEBIT'
+                className={`py-3 px-4 rounded-xl border flex items-center justify-center gap-2.5 text-xs font-bold transition-all cursor-pointer ${type === 'DEBIT'
                     ? 'bg-rose-50 border-rose-500 text-rose-800 ring-2 ring-rose-500/20 shadow-sm'
                     : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
-                }`}
+                  }`}
               >
                 <ArrowDownLeft className={`w-4 h-4 ${type === 'DEBIT' ? 'text-rose-600' : 'text-slate-400'}`} />
                 <span>DEBIT (Deduct)</span>
@@ -199,9 +197,8 @@ export const ModifyBalanceModal: React.FC<ModifyBalanceModalProps> = ({
                   setValidationErrors((prev) => ({ ...prev, amount: '' }));
                 }}
                 placeholder="0.00"
-                className={`w-full bg-slate-50 border ${
-                  validationErrors.amount ? 'border-rose-500' : 'border-slate-200'
-                } rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-900 font-semibold focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all`}
+                className={`w-full bg-slate-50 border ${validationErrors.amount ? 'border-rose-500' : 'border-slate-200'
+                  } rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-900 font-semibold focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all`}
               />
             </div>
             {validationErrors.amount && (

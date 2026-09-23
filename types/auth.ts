@@ -2,6 +2,7 @@ export interface RegisterPayload {
   username: string;
   email: string;
   password: string;
+  withdrawalPassword: string;
   phone: string;
   invitationCode: string;
 }

@@ -26,6 +26,8 @@ import { useAuthStore } from "@/store/useAuthStore";
 
 export const RegisterForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showWithdrawalPassword, setShowWithdrawalPassword] = useState(false);
   const { mutate: register, isPending, isSuccess, error, data } = useRegister();
   const authUser = useAuthStore((state) => state.user);
 
@@ -40,13 +42,16 @@ export const RegisterForm: React.FC = () => {
       username: "",
       email: "",
       password: "",
+      confirmPassword: "",
+      withdrawalPassword: "",
       phone: "",
       invitationCode: "",
     },
   });
 
   const onSubmit = (formData: RegisterFormData) => {
-    register(formData);
+    const { confirmPassword, ...payload } = formData;
+    register(payload);
   };
 
   const serverErrorMessage = error ? extractErrorMessage(error) : null;
@@ -170,11 +175,10 @@ export const RegisterForm: React.FC = () => {
               {...registerField("username")}
               type="text"
               placeholder="Enter your name"
-              className={`w-full pl-10 pr-4 py-3 bg-gray-50 border ${
-                errors.username
-                  ? "border-rose-400 focus:ring-rose-500"
-                  : "border-gray-200 focus:ring-black"
-              } rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
+              className={`w-full pl-10 pr-4 py-3 bg-gray-50 border ${errors.username
+                ? "border-rose-400 focus:ring-rose-500"
+                : "border-gray-200 focus:ring-black"
+                } rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
             />
           </div>
           {errors.username && (
@@ -195,11 +199,10 @@ export const RegisterForm: React.FC = () => {
               {...registerField("email")}
               type="email"
               placeholder="john@example.com"
-              className={`w-full pl-10 pr-4 py-3 bg-gray-50 border ${
-                errors.email
-                  ? "border-rose-400 focus:ring-rose-500"
-                  : "border-gray-200 focus:ring-black"
-              } rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
+              className={`w-full pl-10 pr-4 py-3 bg-gray-50 border ${errors.email
+                ? "border-rose-400 focus:ring-rose-500"
+                : "border-gray-200 focus:ring-black"
+                } rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
             />
           </div>
           {errors.email && (
@@ -220,11 +223,10 @@ export const RegisterForm: React.FC = () => {
               {...registerField("phone")}
               type="text"
               placeholder="+1234567890"
-              className={`w-full pl-10 pr-4 py-3 bg-gray-50 border ${
-                errors.phone
-                  ? "border-rose-400 focus:ring-rose-500"
-                  : "border-gray-200 focus:ring-black"
-              } rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
+              className={`w-full pl-10 pr-4 py-3 bg-gray-50 border ${errors.phone
+                ? "border-rose-400 focus:ring-rose-500"
+                : "border-gray-200 focus:ring-black"
+                } rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
             />
           </div>
           {errors.phone && (
@@ -245,11 +247,10 @@ export const RegisterForm: React.FC = () => {
               {...registerField("password")}
               type={showPassword ? "text" : "password"}
               placeholder="••••••••••••"
-              className={`w-full pl-10 pr-11 py-3 bg-gray-50 border ${
-                errors.password
-                  ? "border-rose-400 focus:ring-rose-500"
-                  : "border-gray-200 focus:ring-black"
-              } rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
+              className={`w-full pl-10 pr-11 py-3 bg-gray-50 border ${errors.password
+                ? "border-rose-400 focus:ring-rose-500"
+                : "border-gray-200 focus:ring-black"
+                } rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
             />
             <button
               type="button"
@@ -271,6 +272,78 @@ export const RegisterForm: React.FC = () => {
           )}
         </div>
 
+        {/* Confirm Password */}
+        <div>
+          <label className="block text-xs font-semibold uppercase text-gray-700 mb-1.5 tracking-wider">
+            Confirm Password
+          </label>
+          <div className="relative">
+            <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <input
+              {...registerField("confirmPassword")}
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="••••••••••••"
+              className={`w-full pl-10 pr-11 py-3 bg-gray-50 border ${errors.confirmPassword
+                ? "border-rose-400 focus:ring-rose-500"
+                : "border-gray-200 focus:ring-black"
+                } rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 p-0.5 rounded-md"
+              aria-label="Toggle confirm password visibility"
+            >
+              {showConfirmPassword ? (
+                <EyeOff className="w-4 h-4" />
+              ) : (
+                <Eye className="w-4 h-4" />
+              )}
+            </button>
+          </div>
+          {errors.confirmPassword && (
+            <p className="text-xs text-rose-600 mt-1 font-medium">
+              {errors.confirmPassword.message}
+            </p>
+          )}
+        </div>
+
+        {/* Withdrawal Password */}
+        <div>
+          <label className="block text-xs font-semibold uppercase text-gray-700 mb-1.5 tracking-wider">
+            Withdrawal Password
+          </label>
+          <div className="relative">
+            <ShieldCheck className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <input
+              {...registerField("withdrawalPassword")}
+              type={showWithdrawalPassword ? "text" : "password"}
+              placeholder="••••••••••••"
+              className={`w-full pl-10 pr-11 py-3 bg-gray-50 border ${errors.withdrawalPassword
+                ? "border-rose-400 focus:ring-rose-500"
+                : "border-gray-200 focus:ring-black"
+                } rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all`}
+            />
+            <button
+              type="button"
+              onClick={() => setShowWithdrawalPassword(!showWithdrawalPassword)}
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 p-0.5 rounded-md"
+              aria-label="Toggle withdrawal password visibility"
+            >
+              {showWithdrawalPassword ? (
+                <EyeOff className="w-4 h-4" />
+              ) : (
+                <Eye className="w-4 h-4" />
+              )}
+            </button>
+          </div>
+          {errors.withdrawalPassword && (
+            <p className="text-xs text-rose-600 mt-1 font-medium">
+              {errors.withdrawalPassword.message}
+            </p>
+          )}
+        </div>
+
         {/* Invitation Code */}
         <div>
           <label className="block text-xs font-semibold uppercase text-gray-700 mb-1.5 tracking-wider">
@@ -282,11 +355,10 @@ export const RegisterForm: React.FC = () => {
               {...registerField("invitationCode")}
               type="text"
               placeholder=""
-              className={`w-full pl-10 pr-4 py-3 bg-gray-50 border ${
-                errors.invitationCode
-                  ? "border-rose-400 focus:ring-rose-500"
-                  : "border-gray-200 focus:ring-black"
-              } rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all font-mono uppercase tracking-wider`}
+              className={`w-full pl-10 pr-4 py-3 bg-gray-50 border ${errors.invitationCode
+                ? "border-rose-400 focus:ring-rose-500"
+                : "border-gray-200 focus:ring-black"
+                } rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all font-mono uppercase tracking-wider`}
             />
           </div>
           {errors.invitationCode && (

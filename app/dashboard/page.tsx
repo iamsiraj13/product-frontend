@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   FileText,
   TrendingUp,
@@ -171,8 +172,16 @@ export default function DashboardMainPage() {
     maximumFractionDigits: 2,
   })}`;
 
+  const router = useRouter();
+
   const handleActionClick = (label: string) => {
-    toast.info(`${label} quick action selected`);
+    if (label === "Wallet") {
+      router.push("/dashboard/wallet");
+    } else if (label === "Withdraw") {
+      router.push("/dashboard/withdraw");
+    } else {
+      toast.info(`${label} quick action selected`);
+    }
   };
 
   const handleCopyCode = (code: string) => {

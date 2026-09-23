@@ -12,6 +12,7 @@ import {
   ArrowLeft,
   Sparkles,
   X,
+  ArrowDownRight,
 } from "lucide-react";
 
 interface AdminSidebarProps {
@@ -47,6 +48,11 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
       label: "Product",
       icon: Package,
       badge: "38",
+    },
+    {
+      href: "/admin/dashboard/withdrawals",
+      label: "Withdraw Management",
+      icon: ArrowDownRight,
     },
   ];
 

@@ -19,7 +19,9 @@ export default function AdminDashboardLayout({
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
+    queueMicrotask(() => {
+      setIsMounted(true);
+    });
     if (useAuthStore.persist?.hasHydrated()) {
       setHasHydrated(true);
     }
@@ -61,6 +63,9 @@ export default function AdminDashboardLayout({
     }
     if (pathname.includes('/products')) {
       return 'Product Catalog';
+    }
+    if (pathname.includes('/withdrawals')) {
+      return 'Withdraw Management';
     }
     return 'Dashboard Overview';
   };

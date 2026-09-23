@@ -146,9 +146,8 @@ export default function DashboardLayout({
 
         {/* Left Sidebar */}
         <aside
-          className={`fixed top-14 bottom-0 left-0 z-50 w-64 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-200 ease-in-out md:static md:top-auto md:z-auto md:w-60 md:min-h-[calc(100vh-3.5rem)] md:translate-x-0 ${
-            isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+          className={`fixed top-14 bottom-0 left-0 z-50 w-64 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-200 ease-in-out md:static md:top-auto md:z-auto md:w-60 md:min-h-[calc(100vh-3.5rem)] md:translate-x-0 ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
         >
           <nav className="flex-1 divide-y divide-gray-100 overflow-y-auto">
             <div className="py-1">
@@ -163,11 +162,10 @@ export default function DashboardLayout({
                     key={item.href}
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3.5 text-xs sm:text-sm font-medium transition-colors border-b border-gray-100 ${
-                      isActive
-                        ? "text-gray-900 bg-gray-50/80 font-semibold"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                    }`}
+                    className={`flex items-center gap-3 px-4 py-3.5 text-xs sm:text-sm font-medium transition-colors border-b border-gray-100 ${isActive
+                      ? "text-gray-900 bg-gray-50/80 font-semibold"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                      }`}
                   >
                     <Icon
                       className={`w-4 h-4 ${isActive ? "text-black" : "text-gray-500"}`}
