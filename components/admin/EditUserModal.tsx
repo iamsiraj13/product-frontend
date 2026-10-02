@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent } from "react";
 import {
   X,
   User,
@@ -17,9 +17,9 @@ import {
   CheckCircle2,
   XCircle,
   Layers,
-} from 'lucide-react';
-import { useUpdateAdminUser } from '@/hooks/useUpdateAdminUser';
-import { AdminUser, UpdateAdminUserPayload } from '@/types/adminUser';
+} from "lucide-react";
+import { useUpdateAdminUser } from "@/hooks/useUpdateAdminUser";
+import { AdminUser, UpdateAdminUserPayload } from "@/types/adminUser";
 
 interface EditUserModalProps {
   isOpen: boolean;
@@ -34,27 +34,29 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
   user,
   onUserUpdated,
 }) => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('USER');
-  const [accountType, setAccountType] = useState('MAIN');
-  const [balance, setBalance] = useState<string | number>('0');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("USER");
+  const [accountType, setAccountType] = useState("MAIN");
+  const [balance, setBalance] = useState<string | number>("0");
   const [isActive, setIsActive] = useState(true);
 
   const [showPassword, setShowPassword] = useState(false);
-  const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({});
+  const [validationErrors, setValidationErrors] = useState<{
+    [key: string]: string;
+  }>({});
 
   useEffect(() => {
     if (user && isOpen) {
-      setUsername(user.username || '');
-      setEmail(user.email || '');
-      setPhone(user.phone || '');
-      setPassword('');
-      setRole(user.role || 'USER');
-      setAccountType(user.accountType || 'MAIN');
-      setBalance(user.balance !== undefined && user.balance !== null ? user.balance : '0');
+      setUsername(user.username || "");
+      setEmail(user.email || "");
+      setPhone(user.phone || "");
+      setPassword("");
+      setRole(user.role || "USER");
+      setAccountType(user.accountType || "MAIN");
+      setBalance(user.balance || "0");
       setIsActive(user.isActive !== undefined ? user.isActive : true);
       setValidationErrors({});
       setShowPassword(false);
@@ -82,22 +84,19 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
     const errors: { [key: string]: string } = {};
 
     if (!username.trim()) {
-      errors.username = 'Username is required';
+      errors.username = "Username is required";
     }
 
     if (!email.trim()) {
-      errors.email = 'Email address is required';
+      errors.email = "Email address is required";
     } else if (!/\S+@\S+\.\S+/.test(email.trim())) {
-      errors.email = 'Please enter a valid email address';
+      errors.email = "Please enter a valid email address";
     }
 
     const numericBalance = Number(balance);
-    if (isNaN(numericBalance) || numericBalance < 0) {
-      errors.balance = 'Balance must be a non-negative number';
-    }
 
     if (password && password.length < 6) {
-      errors.password = 'New password must be at least 6 characters';
+      errors.password = "New password must be at least 6 characters";
     }
 
     if (Object.keys(errors).length > 0) {
@@ -144,8 +143,12 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
               <Edit3 className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-serif-luxury text-lg font-bold tracking-tight">Edit User Details</h3>
-              <p className="text-xs text-slate-400">Update parameters for {user.username || user.email}</p>
+              <h3 className="font-serif-luxury text-lg font-bold tracking-tight">
+                Edit User Details
+              </h3>
+              <p className="text-xs text-slate-400">
+                Update parameters for {user.username || user.email}
+              </p>
             </div>
           </div>
 
@@ -159,7 +162,10 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+        <form
+          onSubmit={handleSubmit}
+          className="p-6 space-y-4 max-h-[80vh] overflow-y-auto"
+        >
           {/* Username Field */}
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
@@ -172,11 +178,13 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
                 value={username}
                 onChange={(e) => {
                   setUsername(e.target.value);
-                  setValidationErrors((prev) => ({ ...prev, username: '' }));
+                  setValidationErrors((prev) => ({ ...prev, username: "" }));
                 }}
                 placeholder="e.g. john_doe"
                 className={`w-full bg-slate-50 border ${
-                  validationErrors.username ? 'border-rose-500' : 'border-slate-200'
+                  validationErrors.username
+                    ? "border-rose-500"
+                    : "border-slate-200"
                 } rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-900 font-medium focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all`}
               />
             </div>
@@ -200,11 +208,13 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
-                  setValidationErrors((prev) => ({ ...prev, email: '' }));
+                  setValidationErrors((prev) => ({ ...prev, email: "" }));
                 }}
                 placeholder="e.g. john@example.com"
                 className={`w-full bg-slate-50 border ${
-                  validationErrors.email ? 'border-rose-500' : 'border-slate-200'
+                  validationErrors.email
+                    ? "border-rose-500"
+                    : "border-slate-200"
                 } rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-900 font-medium focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all`}
               />
             </div>
@@ -219,7 +229,10 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
           {/* Phone Field */}
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Phone Number <span className="text-slate-400 font-normal lowercase">(optional)</span>
+              Phone Number{" "}
+              <span className="text-slate-400 font-normal lowercase">
+                (optional)
+              </span>
             </label>
             <div className="relative">
               <Phone className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -236,20 +249,25 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
           {/* Password Field (Optional on edit) */}
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              New Password <span className="text-slate-400 font-normal lowercase">(leave blank to keep current)</span>
+              New Password{" "}
+              <span className="text-slate-400 font-normal lowercase">
+                (leave blank to keep current)
+              </span>
             </label>
             <div className="relative">
               <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
-                  setValidationErrors((prev) => ({ ...prev, password: '' }));
+                  setValidationErrors((prev) => ({ ...prev, password: "" }));
                 }}
                 placeholder="Enter new password"
                 className={`w-full bg-slate-50 border ${
-                  validationErrors.password ? 'border-rose-500' : 'border-slate-200'
+                  validationErrors.password
+                    ? "border-rose-500"
+                    : "border-slate-200"
                 } rounded-xl pl-10 pr-10 py-2.5 text-xs text-slate-900 font-medium focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all`}
               />
               <button
@@ -257,7 +275,11 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
               >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
               </button>
             </div>
             {validationErrors.password && (
@@ -323,11 +345,13 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
                   value={balance}
                   onChange={(e) => {
                     setBalance(e.target.value);
-                    setValidationErrors((prev) => ({ ...prev, balance: '' }));
+                    setValidationErrors((prev) => ({ ...prev, balance: "" }));
                   }}
                   placeholder="0.00"
                   className={`w-full bg-slate-50 border ${
-                    validationErrors.balance ? 'border-rose-500' : 'border-slate-200'
+                    validationErrors.balance
+                      ? "border-rose-500"
+                      : "border-slate-200"
                   } rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-900 font-semibold focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all`}
                 />
               </div>
@@ -349,8 +373,8 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
                 onClick={() => setIsActive(!isActive)}
                 className={`w-full py-2.5 px-3.5 rounded-xl border flex items-center justify-between text-xs font-semibold transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-emerald-50/80 border-emerald-300 text-emerald-900'
-                    : 'bg-rose-50/80 border-rose-300 text-rose-900'
+                    ? "bg-emerald-50/80 border-emerald-300 text-emerald-900"
+                    : "bg-rose-50/80 border-rose-300 text-rose-900"
                 }`}
               >
                 <div className="flex items-center gap-2">
@@ -359,16 +383,18 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
                   ) : (
                     <XCircle className="w-4 h-4 text-rose-600" />
                   )}
-                  <span>{isActive ? 'Active Account' : 'Inactive / Suspended'}</span>
+                  <span>
+                    {isActive ? "Active Account" : "Inactive / Suspended"}
+                  </span>
                 </div>
                 <div
                   className={`w-8 h-4 rounded-full p-0.5 transition-colors ${
-                    isActive ? 'bg-emerald-600' : 'bg-slate-300'
+                    isActive ? "bg-emerald-600" : "bg-slate-300"
                   }`}
                 >
                   <div
                     className={`w-3 h-3 rounded-full bg-white transition-transform ${
-                      isActive ? 'translate-x-4' : 'translate-x-0'
+                      isActive ? "translate-x-4" : "translate-x-0"
                     }`}
                   />
                 </div>

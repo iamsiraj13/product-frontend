@@ -9,7 +9,6 @@ import {
   History as HistoryIcon,
   LogOut,
   User as UserIcon,
-  MessageSquare,
   Menu,
   X,
 } from "lucide-react";
@@ -23,7 +22,8 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, isAuthenticated, logout, _hasHydrated, setHasHydrated } = useAuthStore();
+  const { user, isAuthenticated, logout, _hasHydrated, setHasHydrated } =
+    useAuthStore();
   const [isMounted, setIsMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -52,7 +52,9 @@ export default function DashboardLayout({
       <div className="min-h-screen bg-[#fafafa] flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-4 border-gray-900 border-t-transparent rounded-full animate-spin" />
-          <p className="text-xs text-gray-500 font-medium">Loading session...</p>
+          <p className="text-xs text-gray-500 font-medium">
+            Loading session...
+          </p>
         </div>
       </div>
     );
@@ -146,8 +148,9 @@ export default function DashboardLayout({
 
         {/* Left Sidebar */}
         <aside
-          className={`fixed top-14 bottom-0 left-0 z-50 w-64 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-200 ease-in-out md:static md:top-auto md:z-auto md:w-60 md:min-h-[calc(100vh-3.5rem)] md:translate-x-0 ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-            }`}
+          className={`fixed top-14 bottom-0 left-0 z-50 w-64 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-200 ease-in-out md:static md:top-auto md:z-auto md:w-60 md:min-h-[calc(100vh-3.5rem)] md:translate-x-0 ${
+            isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
         >
           <nav className="flex-1 divide-y divide-gray-100 overflow-y-auto">
             <div className="py-1">
@@ -162,10 +165,11 @@ export default function DashboardLayout({
                     key={item.href}
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3.5 text-xs sm:text-sm font-medium transition-colors border-b border-gray-100 ${isActive
-                      ? "text-gray-900 bg-gray-50/80 font-semibold"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                      }`}
+                    className={`flex items-center gap-3 px-4 py-3.5 text-xs sm:text-sm font-medium transition-colors border-b border-gray-100 ${
+                      isActive
+                        ? "text-gray-900 bg-gray-50/80 font-semibold"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                    }`}
                   >
                     <Icon
                       className={`w-4 h-4 ${isActive ? "text-black" : "text-gray-500"}`}
@@ -193,22 +197,6 @@ export default function DashboardLayout({
         <main className="flex-1 p-4 sm:p-6 md:p-8 max-w-7xl w-full mx-auto overflow-x-hidden">
           {children}
         </main>
-      </div>
-
-      {/* Floating Bottom-Right Chat Button */}
-      <div className="fixed bottom-4 right-4 z-50">
-        <button
-          onClick={() => {
-            if (typeof window !== "undefined" && window.Tawk_API?.toggle) {
-              window.Tawk_API.toggle();
-            }
-          }}
-          className="bg-[#3b4754] hover:bg-[#2d3742] text-white px-3.5 py-2 rounded-md shadow-lg flex items-center gap-2 text-xs font-semibold cursor-pointer transition-all active:scale-95"
-          title="Open Live Chat Support"
-        >
-          <MessageSquare className="w-4 h-4 fill-white/20" />
-          <span>C&B</span>
-        </button>
       </div>
     </div>
   );

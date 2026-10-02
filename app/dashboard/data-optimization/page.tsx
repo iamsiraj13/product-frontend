@@ -70,7 +70,7 @@ export default function DataOptimizationPage() {
 
   const handleGenerateProduct = async () => {
     setIsGenerating(true);
-    const toastId = toast.loading("Generating product task...");
+    const toastId = toast.loading("Generating Product...");
 
     try {
       const response = await userTasksApi.generateTask();
@@ -80,9 +80,9 @@ export default function DataOptimizationPage() {
         setGeneratedTask(response.data);
         setTaskModalOpen(true);
         refetchProfile();
-        toast.success("Task product generated successfully!");
+        toast.success("Product generated successfully!");
       } else {
-        toast.error("Failed to generate task product.");
+        toast.error("Failed to generate Product.");
       }
     } catch (error) {
       toast.dismiss(toastId);
@@ -110,11 +110,11 @@ export default function DataOptimizationPage() {
             prev ? { ...prev, status: "IN_PROGRESS" } : null,
           );
         }
-        toast.success("Task started successfully!");
+        toast.success("Product Upload started successfully!");
         setTaskModalOpen(false);
         setReviewModalOpen(true);
       } else {
-        toast.error("Failed to start task.");
+        toast.error("Failed to upload start.");
       }
     } catch (error) {
       toast.dismiss(toastId);
@@ -127,12 +127,12 @@ export default function DataOptimizationPage() {
 
   const handleSubmitReview = async () => {
     if (!generatedTask?.id || selectedCommentIndex === null) {
-      toast.error("Task ID is missing. Please refresh and try again.");
+      toast.error("Product ID is missing. Please refresh and try again.");
       return;
     }
     const selectedComment = COMMENT_OPTIONS[selectedCommentIndex];
     setIsSubmitting(true);
-    const toastId = toast.loading("Submitting task review...");
+    const toastId = toast.loading("Submitting product review...");
 
     try {
       const response = await userTasksApi.submitTask(generatedTask.id, {
@@ -142,12 +142,12 @@ export default function DataOptimizationPage() {
       toast.dismiss(toastId);
 
       if (response.success) {
-        toast.success("Task review submitted successfully!");
+        toast.success("Product review submitted successfully!");
         setReviewModalOpen(false);
         setGeneratedTask(null);
         refetchProfile();
       } else {
-        toast.error("Failed to submit task review.");
+        toast.error("Failed to submit product review.");
       }
     } catch (error) {
       toast.dismiss(toastId);
@@ -187,7 +187,7 @@ export default function DataOptimizationPage() {
               {totalTask}
             </span>
             <span className="text-[11px] text-gray-400 font-medium mt-0.5">
-              Total Task
+              Total Product
             </span>
           </div>
 
@@ -197,7 +197,7 @@ export default function DataOptimizationPage() {
               {completedTask}
             </span>
             <span className="text-[11px] text-gray-400 font-medium mt-0.5">
-              Completed Task
+              Completed Upload
             </span>
           </div>
 
@@ -321,7 +321,7 @@ export default function DataOptimizationPage() {
                 )}
                 <div>
                   <span className="text-gray-400 block text-[11px]">
-                    Task ID
+                    Product ID
                   </span>
                   <span className="font-mono text-[10px] text-gray-500 truncate block">
                     {generatedTask.id.slice(0, 8)}...
@@ -360,7 +360,7 @@ export default function DataOptimizationPage() {
                   Product Review
                 </h3>
                 <p className="text-xs text-gray-400">
-                  Select a review comment to complete task
+                  Select a review comment to complete Upload
                 </p>
               </div>
               <button

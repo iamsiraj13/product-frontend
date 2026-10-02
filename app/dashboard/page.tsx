@@ -31,15 +31,13 @@ import { toast } from "sonner";
 import { useHomeProducts } from "@/hooks/useHomeProducts";
 
 const formatProductPrice = (val: number | string): string => {
-  if (val === undefined || val === null || val === '') return '$0.00';
+  if (val === undefined || val === null || val === "") return "$0.00";
   const str = String(val);
-  if (str.startsWith('$')) return str;
+  if (str.startsWith("$")) return str;
   const num = parseFloat(str);
   if (isNaN(num)) return str;
-  return `$${num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `$${num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
-
-
 
 const quickActions = [
   {
@@ -160,10 +158,12 @@ function FeaturedProductsSkeleton() {
 export default function DashboardMainPage() {
   const { user } = useAuthStore();
   const { data: profile, isLoading, isError, refetch } = useProfile();
-  const { data: homeProducts = [], isLoading: isProductsLoading, isError: isProductsError } = useHomeProducts();
+  const {
+    data: homeProducts = [],
+    isLoading: isProductsLoading,
+    isError: isProductsError,
+  } = useHomeProducts();
   const [copiedCode, setCopiedCode] = useState(false);
-
-
 
   const username = profile?.username || user?.username;
   const rawBalance = profile?.balance ?? user?.balance ?? "0";
@@ -200,7 +200,7 @@ export default function DashboardMainPage() {
     profile?.todayTaskProgress?.totalGeneratedToday ?? 0;
   const taskProgressPercent = Math.min(
     100,
-    Math.round((completedToday / (dailyLimit || 1)) * 100)
+    Math.round((completedToday / (dailyLimit || 1)) * 100),
   );
 
   const totalEarned = profile?.commissionSummary?.totalEarned ?? 0;
@@ -216,8 +216,8 @@ export default function DashboardMainPage() {
           <div className="flex items-center gap-2">
             <Info className="w-4 h-4 text-amber-600 shrink-0" />
             <span>
-              Could not connect to live profile service. Showing offline
-              cached profile data.
+              Could not connect to live profile service. Showing offline cached
+              profile data.
             </span>
           </div>
           <button
@@ -279,7 +279,7 @@ export default function DashboardMainPage() {
                 {completedToday} / {dailyLimit}
               </span>
               <span className="text-[11px] text-gray-400 font-medium mt-0.5">
-                Today Task Progress ({remainingToday} Left)
+                Uploaded Product ({remainingToday} Left)
               </span>
             </div>
 
@@ -340,7 +340,7 @@ export default function DashboardMainPage() {
               <div>
                 <div className="flex items-center justify-between text-gray-500 mb-2">
                   <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500">
-                    Daily Task Progress
+                    Uploaded/Total Product
                   </span>
                   <div className="p-1 bg-amber-50 rounded-xs text-amber-600">
                     <ListTodo className="w-4 h-4" />
@@ -350,9 +350,7 @@ export default function DashboardMainPage() {
                   <span className="text-2xl font-bold text-gray-900">
                     {completedToday}
                   </span>
-                  <span className="text-xs text-gray-500">
-                    / {dailyLimit} Tasks
-                  </span>
+                  <span className="text-xs text-gray-500">/ {dailyLimit}</span>
                 </div>
               </div>
 
@@ -539,11 +537,15 @@ export default function DashboardMainPage() {
           <FeaturedProductsSkeleton />
         ) : isProductsError ? (
           <div className="bg-white border border-gray-200 p-6 text-center rounded-xs">
-            <p className="text-xs text-gray-500">Unable to load featured products at this time.</p>
+            <p className="text-xs text-gray-500">
+              Unable to load featured products at this time.
+            </p>
           </div>
         ) : homeProducts.length === 0 ? (
           <div className="bg-white border border-gray-200 p-6 text-center rounded-xs">
-            <p className="text-xs text-gray-500">No featured products available at the moment.</p>
+            <p className="text-xs text-gray-500">
+              No featured products available at the moment.
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -584,4 +586,3 @@ export default function DashboardMainPage() {
     </div>
   );
 }
-
