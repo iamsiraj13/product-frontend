@@ -35,7 +35,7 @@ import { ProductItem } from "@/types/product";
 // Helper to format image URLs from API
 const formatImageUrl = (url?: string): string => {
   if (!url)
-    return "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=300";
+    return "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png";
   if (
     url.startsWith("http://") ||
     url.startsWith("https://") ||
@@ -507,7 +507,7 @@ export default function AdminProductsPage() {
                                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                       onError={(e) => {
                                         (e.target as HTMLImageElement).src =
-                                          "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=300";
+                                          "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png";
                                       }}
                                     />
                                   </div>

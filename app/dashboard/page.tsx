@@ -282,10 +282,19 @@ export default function DashboardMainPage() {
                 Uploaded Product ({remainingToday} Left)
               </span>
             </div>
-
-            {/* Subcard 2: Commission Summary */}
+            {/* Subcard 3: Network & Invitees */}
             <div className="bg-[#262626] p-4 text-center rounded-none flex flex-col items-center justify-center border border-neutral-800/50 hover:border-neutral-700 transition-colors">
               <TrendingUp className="w-4 h-4 text-emerald-400 mb-1" />
+              <span className="text-xl font-bold text-white leading-tight">
+                33
+              </span>
+              <span className="text-[11px] text-gray-400 font-medium mt-0.5">
+                Total Products
+              </span>
+            </div>
+            {/* Subcard 2: Commission Summary */}
+            <div className="bg-[#262626] p-4 text-center rounded-none flex flex-col items-center justify-center border border-neutral-800/50 hover:border-neutral-700 transition-colors">
+              <DollarSign className="w-4 h-4 text-blue-400 mb-1" />
               <span className="text-xl font-bold text-white leading-tight">
                 $
                 {Number(totalEarned).toLocaleString("en-US", {
@@ -295,19 +304,6 @@ export default function DashboardMainPage() {
               </span>
               <span className="text-[11px] text-gray-400 font-medium mt-0.5">
                 Earned Commission (Today: ${todayEarned.toFixed(2)})
-              </span>
-            </div>
-
-            {/* Subcard 3: Network & Invitees */}
-            <div className="bg-[#262626] p-4 text-center rounded-none flex flex-col items-center justify-center border border-neutral-800/50 hover:border-neutral-700 transition-colors">
-              <DollarSign className="w-4 h-4 text-blue-400 mb-1" />
-              <span className="text-xl font-bold text-white leading-tight">
-                {inviteesCount}
-              </span>
-              <span className="text-[11px] text-gray-400 font-medium mt-0.5">
-                {invitedByUsername
-                  ? `Invitees (Invited by @${invitedByUsername})`
-                  : "Invitees"}
               </span>
             </div>
           </div>
