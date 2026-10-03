@@ -179,6 +179,18 @@ export default function DashboardMainPage() {
       router.push("/dashboard/wallet");
     } else if (label === "Withdraw") {
       router.push("/dashboard/withdraw");
+    } else if (label === "Certificate") {
+      router.push("/dashboard/certificate");
+    } else if (label === "Security") {
+      router.push("/dashboard/security");
+    } else if (label === "About") {
+      router.push("/dashboard/about");
+    } else if (label === "T&C") {
+      router.push("/dashboard/tc");
+    } else if (label === "Support") {
+      router.push("/dashboard/support");
+    } else if (label === "ID") {
+      router.push("/dashboard/id");
     } else {
       toast.info(`${label} quick action selected`);
     }
