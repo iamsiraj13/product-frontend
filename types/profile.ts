@@ -24,6 +24,7 @@ export interface ProfileData {
   accountType: string;
   balance: string;
   invitationCode: string;
+  hasClaimedWelcomeReward?: boolean;
   parentUserId: string | null;
   parentUser: unknown | null;
   childAccounts: unknown[];

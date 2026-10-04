@@ -137,3 +137,58 @@ export const useCreateWithdrawal = (options?: UseCreateWithdrawalOptions) => {
   });
 };
 
+interface UseClaimWelcomeRewardOptions {
+  onSuccessCallback?: (data: ApiResponse<unknown>) => void;
+  onErrorCallback?: (error: unknown) => void;
+}
+
+export const useClaimWelcomeReward = (options?: UseClaimWelcomeRewardOptions) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<ApiResponse<unknown>, Error, void>({
+    mutationFn: () => walletApi.claimWelcomeReward(),
+    onSuccess: (response) => {
+      if (response.success) {
+        let successMsg = 'Successfully claimed $10 welcome reward!';
+        
+        if (
+          typeof response.data === 'object' &&
+          response.data !== null &&
+          'message' in response.data &&
+          typeof (response.data as { message?: string }).message === 'string'
+        ) {
+          successMsg = (response.data as { message: string }).message;
+        } else if (typeof response.message === 'string') {
+          successMsg = response.message;
+        }
+
+        toast.success(successMsg);
+        queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+        queryClient.invalidateQueries({ queryKey: ['profile'] });
+
+        if (options?.onSuccessCallback) {
+          options.onSuccessCallback(response);
+        }
+      } else {
+        const errorMsg = response.message
+          ? Array.isArray(response.message)
+            ? response.message.join(', ')
+            : response.message
+          : 'Failed to claim welcome reward';
+        toast.error(errorMsg);
+        if (options?.onErrorCallback) {
+          options.onErrorCallback(new Error(errorMsg));
+        }
+      }
+    },
+    onError: (error) => {
+      const errorMessage = extractErrorMessage(error);
+      toast.error(errorMessage);
+      if (options?.onErrorCallback) {
+        options.onErrorCallback(error);
+      }
+    },
+  });
+};
+
+

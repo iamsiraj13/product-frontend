@@ -26,5 +26,10 @@ export const walletApi = {
     const response = await apiClient.post<ApiResponse<WithdrawalItem | unknown>>('/withdrawals', payload);
     return response.data;
   },
+
+  claimWelcomeReward: async (): Promise<ApiResponse<unknown>> => {
+    const response = await apiClient.post<ApiResponse<unknown>>('/wallet/claim-welcome-reward');
+    return response.data;
+  },
 };
 

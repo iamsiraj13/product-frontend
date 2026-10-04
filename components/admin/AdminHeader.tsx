@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Menu, Bell, LogOut, Search, User as UserIcon } from "lucide-react";
+import { Menu, LogOut, User as UserIcon } from "lucide-react";
 import { User } from "@/types/auth";
 
 interface AdminHeaderProps {
@@ -17,7 +17,6 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
   onLogout,
   onOpenMobileSidebar,
 }) => {
-  // Avatar image URL: use user provided image if available, else a beautiful high quality sample profile avatar
   const avatarImageUrl =
     "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250";
 
@@ -44,18 +43,6 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
           </div>
         </div>
 
-        {/* Center Section: Search Bar (Desktop) */}
-        <div className="hidden md:flex items-center flex-1 max-w-xs mx-4">
-          <div className="relative w-full">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
-            <input
-              type="text"
-              placeholder="Search anything..."
-              className="w-full bg-slate-950/60 border border-slate-800 rounded-xl pl-10 pr-4 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-400/50 transition-colors"
-            />
-          </div>
-        </div>
-
         {/* Right Section: User Image, User Name, Notifications & Logout */}
         <div className="flex items-center gap-3 sm:gap-4">
           {/* Notification Button */}
@@ -73,7 +60,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
                   (e.currentTarget as HTMLImageElement).style.display = "none";
                 }}
               />
-              <div className="hidden w-full h-full bg-gradient-to-tr from-amber-500 to-amber-300 text-slate-950 font-bold text-xs flex items-center justify-center">
+              <div className="hidden w-full h-full bg-linear-to-tr from-amber-500 to-amber-300 text-slate-950 font-bold text-xs items-center justify-center">
                 {user?.username ? (
                   user.username.charAt(0).toUpperCase()
                 ) : (
@@ -84,7 +71,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
 
             {/* User Name & Role */}
             <div className="text-left pr-1">
-              <p className="font-semibold text-xs text-white leading-tight truncate max-w-[110px] sm:max-w-[140px]">
+              <p className="font-semibold text-xs text-white leading-tight truncate max-w-27.5 sm:max-w-35">
                 {user?.username || "Rahim"}
               </p>
               <div className="flex items-center gap-1 mt-0.5">

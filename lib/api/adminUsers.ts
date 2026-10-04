@@ -1,6 +1,6 @@
 import { apiClient } from './api-client';
 import { ApiResponse } from '@/types/auth';
-import { AdminUser, AdminUsersPaginatedData, CreateAgentPayload, UpdateAdminUserPayload, ModifyBalancePayload } from '@/types/adminUser';
+import { AdminUser, AdminUsersPaginatedData, CreateAgentPayload, CreateTrainingAccountPayload, UpdateAdminUserPayload, ModifyBalancePayload } from '@/types/adminUser';
 import { PreGenerateTasksData, UserTasksData } from '@/types/task';
 
 export interface GetAdminUsersParams {
@@ -20,6 +20,10 @@ export const adminUsersApi = {
   },
   createAgent: async (payload: CreateAgentPayload): Promise<ApiResponse<AdminUser>> => {
     const response = await apiClient.post<ApiResponse<AdminUser>>('/admin/agents', payload);
+    return response.data;
+  },
+  createTrainingAccount: async (payload: CreateTrainingAccountPayload): Promise<ApiResponse<AdminUser>> => {
+    const response = await apiClient.post<ApiResponse<AdminUser>>('/admin/training-account', payload);
     return response.data;
   },
   updateUser: async (id: string, payload: UpdateAdminUserPayload): Promise<ApiResponse<AdminUser>> => {

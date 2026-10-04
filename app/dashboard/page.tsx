@@ -23,9 +23,12 @@ import {
   User as UserIcon,
   Calendar,
   Sparkles,
+  Gift,
+  Loader2,
 } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useProfile } from "@/hooks/useProfile";
+import { useClaimWelcomeReward } from "@/hooks/useWallet";
 import { toast } from "sonner";
 
 import { useHomeProducts } from "@/hooks/useHomeProducts";
@@ -158,6 +161,7 @@ function FeaturedProductsSkeleton() {
 export default function DashboardMainPage() {
   const { user } = useAuthStore();
   const { data: profile, isLoading, isError, refetch } = useProfile();
+  const claimRewardMutation = useClaimWelcomeReward();
   const {
     data: homeProducts = [],
     isLoading: isProductsLoading,
@@ -239,6 +243,57 @@ export default function DashboardMainPage() {
             <RefreshCw className="w-3.5 h-3.5" />
             <span>Retry</span>
           </button>
+        </div>
+      )}
+
+      {/* 10$ Free Welcome Reward Claim Banner */}
+      {!isLoading && profile && profile.hasClaimedWelcomeReward === false && (
+        <div className="relative overflow-hidden bg-gradient-to-r from-amber-950/40 via-neutral-900 to-emerald-950/40 border border-amber-500/30 p-5 sm:p-6 shadow-md transition-all rounded-xs">
+          {/* Decorative background glow */}
+          <div className="absolute -top-12 -right-12 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-gradient-to-br from-amber-500/20 to-emerald-500/20 border border-amber-500/40 text-amber-400 rounded-xs shrink-0 shadow-xs">
+                <Gift className="w-7 h-7 animate-bounce" />
+              </div>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-bold tracking-wider uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-2xs">
+                    Welcome Bonus
+                  </span>
+                  <span className="text-xs text-emerald-400 font-semibold flex items-center gap-1">
+                    <Sparkles className="w-3 h-3" /> $10.00 Instant Reward
+                  </span>
+                </div>
+                <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                  Claim Your $10 Free Registration Reward!
+                </h3>
+                <p className="text-xs text-gray-300 max-w-xl font-normal leading-relaxed">
+                  Welcome aboard! As a new member, you are eligible for an instant $10 deposit credited directly to your account wallet. Click the button to claim now.
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => claimRewardMutation.mutate()}
+              disabled={claimRewardMutation.isPending}
+              className="w-full sm:w-auto shrink-0 bg-gradient-to-r from-amber-500 via-amber-400 to-emerald-400 hover:from-amber-400 hover:to-emerald-300 text-black font-bold text-xs sm:text-sm px-6 py-3 rounded-xs shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
+            >
+              {claimRewardMutation.isPending ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin text-black" />
+                  <span>Claiming Reward...</span>
+                </>
+              ) : (
+                <>
+                  <Gift className="w-4 h-4 text-black" />
+                  <span>Claim $10 Free Reward</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
       )}
 

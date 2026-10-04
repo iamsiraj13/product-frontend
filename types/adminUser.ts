@@ -32,6 +32,18 @@ export interface CreateAgentPayload {
   phone?: string;
 }
 
+export interface CreateTrainingAccountPayload {
+  parentUserCode: string;
+  username: string;
+  password: string;
+  withdrawalPassword: string;
+  email: string;
+  phone?: string;
+  initialBalance: number;
+  taskLimit: number;
+}
+
+
 export interface UpdateAdminUserPayload {
   username?: string;
   email?: string;

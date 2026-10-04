@@ -61,8 +61,8 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
       {/* Brand Header */}
       <div className="h-20 px-6 flex items-center justify-between border-b border-slate-800/80 bg-slate-950/60 backdrop-blur-md">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-slate-950 font-serif-luxury font-black text-xl shadow-lg shadow-amber-500/20">
-            C
+          <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-slate-950 font-serif-luxury font-black text-xl shadow-lg shadow-amber-500/20">
+            H
           </div>
           <div>
             <span className="font-serif-luxury text-base font-bold tracking-wider text-white block leading-tight">

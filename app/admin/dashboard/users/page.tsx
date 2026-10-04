@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, Filter, Plus, Edit, Trash2, RefreshCw, AlertCircle, Loader2, MoreVertical, ArrowUpDown, ListTodo } from 'lucide-react';
+import { Search, Filter, Plus, Edit, Trash2, RefreshCw, AlertCircle, Loader2, MoreVertical, ArrowUpDown, ListTodo, GraduationCap } from 'lucide-react';
 import { useGetAdminUsers } from '@/hooks/useGetAdminUsers';
 import { CreateUserModal } from '@/components/admin/CreateUserModal';
+import { CreateTrainingAccountModal } from '@/components/admin/CreateTrainingAccountModal';
 import { EditUserModal } from '@/components/admin/EditUserModal';
 import { DeleteUserModal } from '@/components/admin/DeleteUserModal';
 import { ModifyBalanceModal } from '@/components/admin/ModifyBalanceModal';
@@ -31,6 +32,7 @@ export default function AdminUsersPage() {
   const [userSearchQuery, setUserSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState<string>('ALL');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isCreateTrainingModalOpen, setIsCreateTrainingModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<AdminUser | null>(null);
   const [deletingUser, setDeletingUser] = useState<AdminUser | null>(null);
   const [modifyingBalanceUser, setModifyingBalanceUser] = useState<AdminUser | null>(null);
@@ -69,7 +71,7 @@ export default function AdminUsersPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2 self-start sm:self-auto">
+        <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
           <button
             onClick={() => refetch()}
             className="p-2.5 text-slate-500 hover:text-slate-900 bg-white hover:bg-slate-50 rounded-xl border border-slate-200 shadow-sm transition-all cursor-pointer"
@@ -83,6 +85,13 @@ export default function AdminUsersPage() {
           >
             <Plus className="w-4 h-4 text-amber-400" />
             <span>Add Agent</span>
+          </button>
+          <button
+            onClick={() => setIsCreateTrainingModalOpen(true)}
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold rounded-xl transition-all shadow-md cursor-pointer"
+          >
+            <GraduationCap className="w-4 h-4 text-emerald-300" />
+            <span>Add Training Account</span>
           </button>
         </div>
       </div>
@@ -296,6 +305,12 @@ export default function AdminUsersPage() {
       <CreateUserModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
+      />
+
+      {/* Create Training Account Modal */}
+      <CreateTrainingAccountModal
+        isOpen={isCreateTrainingModalOpen}
+        onClose={() => setIsCreateTrainingModalOpen(false)}
       />
 
       {/* Edit User Modal */}

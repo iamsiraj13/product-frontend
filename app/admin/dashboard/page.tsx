@@ -45,7 +45,7 @@ export default function AdminDashboardPage() {
     <div className="space-y-8 animate-fade-in">
       {/* Welcome Banner */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-sm relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-amber-100/50 via-amber-50/20 to-transparent rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-linear-to-bl from-amber-100/50 via-amber-50/20 to-transparent rounded-full blur-3xl pointer-events-none" />
 
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 text-amber-800 border border-amber-200/80 rounded-full text-xs font-semibold uppercase tracking-wider mb-3">
