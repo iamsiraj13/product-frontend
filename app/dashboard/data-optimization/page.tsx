@@ -16,6 +16,7 @@ import { useProfile } from "@/hooks/useProfile";
 import { userTasksApi } from "@/lib/api/userTasks";
 import { extractErrorMessage } from "@/lib/api/api-client";
 import { UserTaskItem } from "@/types/task";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 const formatImageUrl = (url?: string): string => {
@@ -41,6 +42,7 @@ const COMMENT_OPTIONS = [
 ];
 
 export default function DataOptimizationPage() {
+  const router = useRouter();
   const { user } = useAuthStore();
   const { data: profile, refetch: refetchProfile } = useProfile();
   const [isGenerating, setIsGenerating] = useState(false);
@@ -147,12 +149,26 @@ export default function DataOptimizationPage() {
         setGeneratedTask(null);
         refetchProfile();
       } else {
-        toast.error("Failed to submit product review.");
+        const errorMsg =
+          (Array.isArray(response.message)
+            ? response.message.join(", ")
+            : response.message) || "Failed to submit product review.";
+        toast.error(errorMsg);
+        setReviewModalOpen(false);
+        setTaskModalOpen(false);
+        setGeneratedTask(null);
+        refetchProfile();
+        router.push("/dashboard/data-optimization");
       }
     } catch (error) {
       toast.dismiss(toastId);
       const errorMessage = extractErrorMessage(error);
       toast.error(errorMessage);
+      setReviewModalOpen(false);
+      setTaskModalOpen(false);
+      setGeneratedTask(null);
+      refetchProfile();
+      router.push("/dashboard/data-optimization");
     } finally {
       setIsSubmitting(false);
     }
