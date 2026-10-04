@@ -96,7 +96,7 @@ export default function DataOptimizationPage() {
   const handleStartTask = async () => {
     if (!generatedTask?.id) return;
     setIsStarting(true);
-    const toastId = toast.loading("Starting task...");
+    const toastId = toast.loading("Starting..");
 
     try {
       const response = await userTasksApi.startTask(generatedTask.id);
@@ -245,7 +245,7 @@ export default function DataOptimizationPage() {
                   Step #{generatedTask.stepNumber}
                 </span>
                 <h3 className="font-serif font-medium text-lg text-gray-900">
-                  Task Generated
+                  Product Generated
                 </h3>
               </div>
               <button
@@ -315,7 +315,7 @@ export default function DataOptimizationPage() {
                       Commission Rate
                     </span>
                     <span className="font-medium text-gray-700">
-                      {generatedTask.product.commissionRate}%
+                      {generatedTask?.commissionSnapshotRate}%
                     </span>
                   </div>
                 )}

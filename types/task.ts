@@ -18,10 +18,11 @@ export interface UserTaskItem {
   stepNumber: number;
   priceSnapshot: string | number;
   commissionSnapshot: string | number;
+  commissionSnapshotRate: string | number;
   earnedCommission?: string | number | null;
   rating?: number | null;
   comment?: string | null;
-  status: 'GENERATED' | 'COMPLETED' | string;
+  status: "GENERATED" | "COMPLETED" | string;
   generatedAt?: string;
   completedAt?: string | null;
   product?: TaskProduct;
@@ -58,5 +59,3 @@ export interface SubmitTaskPayload {
   rating: number;
   comment: string;
 }
-
-
