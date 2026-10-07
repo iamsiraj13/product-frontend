@@ -11,6 +11,7 @@ import {
   User as UserIcon,
   Menu,
   X,
+  Settings,
 } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { toast } from "sonner";
@@ -89,7 +90,14 @@ export default function DashboardLayout({
       icon: HistoryIcon,
       exact: false,
     },
+    {
+      name: "Settings",
+      href: "/dashboard/settings",
+      icon: Settings,
+      exact: false,
+    },
   ];
+
 
   return (
     <div className="min-h-screen bg-[#fafafa] flex flex-col font-sans antialiased text-gray-900">

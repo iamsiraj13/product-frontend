@@ -57,3 +57,45 @@ export const loginSchema = z.object({
 });
 
 export type LoginFormData = z.infer<typeof loginSchema>;
+
+export const changePasswordSchema = z
+  .object({
+    oldPassword: z
+      .string()
+      .min(1, "Current password is required"),
+    newPassword: z
+      .string()
+      .min(1, "New password is required")
+      .min(6, "New password must be at least 6 characters"),
+    confirmPassword: z
+      .string()
+      .min(1, "Please confirm your new password"),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "New password and confirm password do not match",
+    path: ["confirmPassword"],
+  });
+
+export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;
+
+export const changeWithdrawalPasswordSchema = z
+  .object({
+    oldWithdrawalPassword: z
+      .string()
+      .min(1, "Current withdrawal password is required"),
+    newWithdrawalPassword: z
+      .string()
+      .min(1, "New withdrawal password is required")
+      .min(6, "New withdrawal password must be at least 6 characters"),
+    confirmWithdrawalPassword: z
+      .string()
+      .min(1, "Please confirm your new withdrawal password"),
+  })
+  .refine((data) => data.newWithdrawalPassword === data.confirmWithdrawalPassword, {
+    message: "New withdrawal password and confirm withdrawal password do not match",
+    path: ["confirmWithdrawalPassword"],
+  });
+
+export type ChangeWithdrawalPasswordFormData = z.infer<typeof changeWithdrawalPasswordSchema>;
+
+

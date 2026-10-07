@@ -36,3 +36,17 @@ export interface ProfileData {
   todayTaskProgress: TodayTaskProgress;
   commissionSummary: CommissionSummary;
 }
+
+export interface ChangePasswordPayload {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export interface ChangeWithdrawalPasswordPayload {
+  oldWithdrawalPassword: string;
+  newWithdrawalPassword: string;
+  confirmWithdrawalPassword: string;
+}
+
+
