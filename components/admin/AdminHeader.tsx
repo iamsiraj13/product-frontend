@@ -24,7 +24,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
     <header className="sticky top-0 z-20 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 text-slate-100 shadow-sm">
       <div className="px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
         {/* Left Section: Mobile toggle & Page Title */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <button
             onClick={onOpenMobileSidebar}
             className="lg:hidden p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
@@ -34,7 +34,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
           </button>
 
           <div>
-            <h1 className="text-lg sm:text-xl font-bold font-serif-luxury tracking-wide text-white capitalize">
+            <h1 className="text-md sm:text-xl font-bold font-serif-luxury tracking-wide text-white capitalize">
               {activeTabTitle}
             </h1>
             <p className="text-xs text-slate-400 hidden sm:block">
