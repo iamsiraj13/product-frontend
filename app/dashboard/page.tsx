@@ -346,7 +346,7 @@ export default function DashboardMainPage() {
                 {completedToday} / {dailyLimit}
               </span>
               <span className="text-[11px] text-gray-400 font-medium mt-0.5">
-                Uploaded Product ({remainingToday} Left)
+                Uploaded Product
               </span>
             </div>
             {/* Subcard 3: Network & Invitees */}

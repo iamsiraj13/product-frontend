@@ -6,11 +6,7 @@ export const registerSchema = z
       .string()
       .min(1, 'Username is required')
       .min(3, 'Username must be at least 3 characters')
-      .max(30, 'Username must not exceed 30 characters')
-      .regex(
-        /^[a-zA-Z0-9_]+$/,
-        'Username can only contain letters, numbers, and underscores'
-      ),
+      .max(30, 'Username must not exceed 30 characters'),
     email: z
       .string()
       .min(1, 'Email is required')
@@ -28,11 +24,7 @@ export const registerSchema = z
       .min(6, 'Withdrawal password must be at least 6 characters'),
     phone: z
       .string()
-      .min(1, 'Phone number is required')
-      .regex(
-        /^\+?[0-9]{7,15}$/,
-        'Please enter a valid phone number (e.g. +1234567890)'
-      ),
+      .min(1, 'Phone number is required'),
     invitationCode: z
       .string()
       .min(1, 'Invitation code is required')
